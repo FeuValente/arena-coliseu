@@ -166,11 +166,9 @@ function validatePage(){const pg=document.querySelector(`.wizard-page[data-page=
 function wizardNext(){if(validatePage()&&cp<tp-1){cp++;updateWizard();}}
 function wizardPrev(){if(cp>0){cp--;updateWizard();}}
 
-/* Submit */
-document.getElementById('registerForm').addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.target),p={};d.forEach((v,k)=>{p[k]=v;});p.submitted_at=new Date().toISOString();const r=JSON.parse(localStorage.getItem('arena_registrations')||'[]');r.push(p);localStorage.setItem('arena_registrations',JSON.stringify(r));e.target.style.display='none';document.getElementById('wizardSteps').style.display='none';document.getElementById('registerSuccess').classList.add('show');document.getElementById('registerSuccess').scrollIntoView({behavior:'smooth',block:'center'});});
-
 /* Phone mask */
 document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
 </script>
+<script src="script-formularios.js"></script>
 </body>
 </html>

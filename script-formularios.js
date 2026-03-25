@@ -4,7 +4,7 @@
 // Troque a URL abaixo pela URL do seu Google Apps Script Web App
 // (Veja o guia 06_GUIA_BACKEND_FORMULARIOS.html para instruções)
 
-const GOOGLE_SCRIPT_URL = 'SUA_URL_AQUI';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwc25AZPUl8Yazum0Mc6HgKeyY5wbGnu0ytHmKbDXWZVheQdmmnm4NKsKP-y5U64OFSlw/exec';
 
 // ---- Função genérica de envio ----
 async function enviarParaGoogle(data, type) {
