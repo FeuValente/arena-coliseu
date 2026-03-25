@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscrever Time — Arena Coliseu</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.register__container { max-width: 700px; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <a href="index.html"><img src="assets/img/logo.png" alt="Arena Coliseu" class="header__logo"></a>
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__link" onclick="closeNav()">Home</a>
+    <a href="index.html#sobre" class="nav__link" onclick="closeNav()">Sobre</a>
+    <a href="chaves.html" class="nav__link" onclick="closeNav()">Chaves</a>
+    <a href="index.html#patrocinadores" class="nav__link" onclick="closeNav()">Parceiros</a>
+    <a href="inscricao-time.html" class="nav__cta" onclick="closeNav()">Inscrever Time</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<section class="page-hero">
+  <a href="index.html" class="page-hero__back">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Voltar para Home
+  </a>
+  <div class="section__label">// Inscrição de Time</div>
+  <h1 class="section__title">Inscreva seu Time</h1>
+  <p class="section__desc">Preencha os dados para inscrever sua equipe. Prazo: <strong>01 a 30 de abril de 2026</strong>.</p>
+</section>
+
+<section class="section" style="padding-top:20px;">
+  <div class="register__container">
+
+    <!-- Info boxes -->
+    <div class="info-box info-box--food" data-reveal>
+      <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:#7dcea0;flex-shrink:0;"><path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 000 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+      <div><strong>Doação solidária obrigatória:</strong> Cada jogador deve doar <strong>1 kg de alimento</strong> (não perecível) no dia do evento. Traga no dia da final presencial.</div>
+    </div>
+
+    <div class="info-box info-box--gold" data-reveal data-delay="50">
+      <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--gold);flex-shrink:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <div><strong>Leia o edital completo antes de se inscrever.</strong> <a href="#" target="_blank" style="color:var(--gold);text-decoration:underline;">Acessar edital de participação</a></div>
+    </div>
+
+    <!-- Wizard Steps -->
+    <div class="wizard-steps" id="wizardSteps" data-reveal data-delay="100">
+      <div class="wizard-step active" data-step="0"><span class="wizard-step__num">1</span><span class="wizard-step__label">Equipe</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="1"><span class="wizard-step__num">C</span><span class="wizard-step__label">Capitão</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="2"><span class="wizard-step__num">2</span><span class="wizard-step__label">Jog. 2</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="3"><span class="wizard-step__num">3</span><span class="wizard-step__label">Jog. 3</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="4"><span class="wizard-step__num">4</span><span class="wizard-step__label">Jog. 4</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="5"><span class="wizard-step__num">5</span><span class="wizard-step__label">Jog. 5</span></div>
+      <div class="wizard-step__line"></div>
+      <div class="wizard-step" data-step="6"><span class="wizard-step__num"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span><span class="wizard-step__label">Enviar</span></div>
+    </div>
+
+    <form class="form" id="registerForm" data-reveal data-delay="150">
+      <!-- Page 0: Team -->
+      <div class="wizard-page active" data-page="0">
+        <h3 style="font-family:var(--font-display);font-size:24px;color:var(--gold);letter-spacing:.05em;margin:0 0 20px;">Dados da Equipe</h3>
+        <div class="form__group">
+          <label class="form__label form__label--required">Nome da Equipe</label>
+          <input type="text" class="form__input" name="team_name" placeholder="Ex: Phoenix Esports" required>
+        </div>
+        <div class="form__group">
+          <label class="form__label form__label--required">Modalidade</label>
+          <div class="custom-select" id="modalitySelect">
+            <input type="hidden" name="modality" required>
+            <div class="custom-select__trigger placeholder" tabindex="0">Selecione a modalidade</div>
+            <div class="custom-select__dropdown">
+              <div class="custom-select__option" data-value="CS2"><img src="assets/img/logo-counter-strike-2.png" alt="CS2">Counter-Strike 2</div>
+              <div class="custom-select__option" data-value="Valorant"><img src="assets/img/logo-valorant.png" alt="Valorant">Valorant</div>
+            </div>
+          </div>
+        </div>
+        <div class="form__group">
+          <label class="form__label form__label--required">Logo / Brasão da Equipe (PNG)</label>
+          <label class="form__file-upload" id="logoUpload">
+            <input type="file" name="team_logo" accept=".png" id="logoInput">
+            <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:var(--gold-dim);margin-bottom:8px;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            <div class="form__file-upload__text" id="logoText"><strong>Clique para enviar</strong> ou arraste aqui<br><small style="color:var(--gray);">PNG — mínimo 500x500px</small></div>
+          </label>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="btn btn--primary" onclick="wizardNext()">Próximo — Capitão</button>
+        </div>
+      </div>
+
+      <!-- Page 1: Captain -->
+      <div class="wizard-page" data-page="1">
+        <div class="player-header">
+          <div class="player-header__badge player-header__badge--captain">C</div>
+          <div class="player-header__info"><h4>Jogador 1</h4><small>Capitão da Equipe</small></div>
+        </div>
+        <div class="form__row"><div class="form__group"><label class="form__label form__label--required">Nome Completo</label><input type="text" class="form__input" name="p1_name" placeholder="Nome completo" required></div><div class="form__group"><label class="form__label form__label--required">RG ou CPF</label><input type="text" class="form__input" name="p1_doc" placeholder="Número do documento" required></div></div>
+        <div class="form__row"><div class="form__group"><label class="form__label form__label--required">E-mail</label><input type="email" class="form__input" name="p1_email" placeholder="email@exemplo.com" required></div><div class="form__group"><label class="form__label form__label--required">Telefone / WhatsApp</label><input type="tel" class="form__input" name="p1_phone" placeholder="(00) 00000-0000" required></div></div>
+        <div class="form__group"><label class="form__label form__label--required">Nickname no Jogo (com #)</label><input type="text" class="form__input" name="p1_nick" placeholder="Ex: NickName#1234" required></div>
+        <div class="wizard-nav"><button type="button" class="btn btn--outline" onclick="wizardPrev()">Voltar</button><button type="button" class="btn btn--primary" onclick="wizardNext()">Próximo — Jogador 2</button></div>
+      </div>
+
+      <!-- Pages 2-5 generated by JS -->
+      <div id="wizardPlayersContainer"></div>
+
+      <!-- Page 6: Confirm -->
+      <div class="wizard-page" data-page="6">
+        <h3 style="font-family:var(--font-display);font-size:24px;color:var(--gold);letter-spacing:.05em;margin:0 0 16px;">Confirmar e Enviar</h3>
+        <p style="font-size:14px;color:var(--gray-light);margin-bottom:20px;">Revise seus dados e confirme. Após enviar, entre no Discord.</p>
+        <div class="info-box info-box--discord">
+          <svg viewBox="0 -28.5 256 256" style="width:28px;height:28px;fill:#8b96f0;flex-shrink:0;"><path d="M216.856 16.597A208.502 208.502 0 00164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 00-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193a161.094 161.094 0 0013.89-22.985 136.166 136.166 0 01-21.846-10.632 108.636 108.636 0 005.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 005.355 4.237 136.07 136.07 0 01-21.886 10.653c4.006 8.02 8.638 15.67 13.862 22.965 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36zM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18z"/></svg>
+          <div>
+            <strong style="color:#a0a8f8;">Entrada obrigatória no Discord!</strong><br>
+            <span style="color:#8b96f0;">Todos os jogadores devem entrar no servidor da Arena Coliseu após a inscrição.</span><br>
+            <a href="https://discord.gg/SEU_LINK_AQUI" target="_blank" class="btn btn--discord btn--small" style="margin-top:10px;">
+              <svg viewBox="0 -28.5 256 256" style="width:16px;height:16px;fill:#fff;"><path d="M216.856 16.597A208.502 208.502 0 00164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 00-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193a161.094 161.094 0 0013.89-22.985 136.166 136.166 0 01-21.846-10.632 108.636 108.636 0 005.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 005.355 4.237 136.07 136.07 0 01-21.886 10.653c4.006 8.02 8.638 15.67 13.862 22.965 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36zM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18z"/></svg>
+              Entre no Discord
+            </a>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--gray);margin:16px 0 8px;">Ao enviar, você declara estar ciente e de acordo com o edital e as regras do campeonato.</p>
+        <div class="wizard-nav"><button type="button" class="btn btn--outline" onclick="wizardPrev()">Voltar</button><button type="submit" class="btn btn--primary">Enviar Inscrição</button></div>
+      </div>
+    </form>
+
+    <div class="form__success" id="registerSuccess">
+      <svg viewBox="0 0 24 24" style="width:64px;height:64px;fill:var(--gold);"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      <h3>Inscrição Enviada!</h3>
+      <p>Seu time foi inscrito com sucesso. Fique atento ao Discord para próximos passos. Boa sorte na Arena!</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__brand"><img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo"><span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR PG</span></div>
+  <div class="footer__links"><a href="index.html" class="footer__link">Home</a><a href="chaves.html" class="footer__link">Chaves</a><a href="https://discord.gg/SEU_LINK_AQUI" target="_blank" class="footer__link">Discord</a></div>
+</footer>
+
+<script>
+const header=document.getElementById('header');window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>50)});
+const hamburger=document.getElementById('hamburger'),nav=document.getElementById('nav');hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';});function closeNav(){hamburger.classList.remove('active');nav.classList.remove('open');document.body.style.overflow='';}
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>x.target.classList.add('revealed'),+(x.target.dataset.delay||0));ro.unobserve(x.target);}});},{threshold:.15,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('[data-reveal]').forEach(el=>ro.observe(el));
+
+/* Custom select */
+document.querySelectorAll('.custom-select').forEach(sel=>{const trigger=sel.querySelector('.custom-select__trigger'),dropdown=sel.querySelector('.custom-select__dropdown'),hidden=sel.querySelector('input[type="hidden"]'),options=sel.querySelectorAll('.custom-select__option');trigger.addEventListener('click',()=>{dropdown.classList.toggle('open');trigger.classList.toggle('open');});options.forEach(opt=>{opt.addEventListener('click',()=>{hidden.value=opt.dataset.value;trigger.textContent=opt.textContent.trim();trigger.classList.remove('placeholder','open');dropdown.classList.remove('open');options.forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');});});document.addEventListener('click',e=>{if(!sel.contains(e.target)){dropdown.classList.remove('open');trigger.classList.remove('open');}});});
+
+/* File upload */
+document.getElementById('logoInput').addEventListener('change',function(){if(this.files.length>0){document.getElementById('logoText').innerHTML='<strong style="color:var(--green-ok);">'+this.files[0].name+'</strong>';document.getElementById('logoUpload').classList.add('has-file');}});
+
+/* Generate player pages 2-5 */
+const wpc=document.getElementById('wizardPlayersContainer');
+for(let i=2;i<=5;i++){wpc.innerHTML+=`<div class="wizard-page" data-page="${i}"><div class="player-header"><div class="player-header__badge player-header__badge--player">${i}</div><div class="player-header__info"><h4>Jogador ${i}</h4></div></div><div class="form__row"><div class="form__group"><label class="form__label form__label--required">Nome Completo</label><input type="text" class="form__input" name="p${i}_name" placeholder="Nome completo" required></div><div class="form__group"><label class="form__label form__label--required">RG ou CPF</label><input type="text" class="form__input" name="p${i}_doc" placeholder="Número do documento" required></div></div><div class="form__row"><div class="form__group"><label class="form__label form__label--required">E-mail</label><input type="email" class="form__input" name="p${i}_email" placeholder="email@exemplo.com" required></div><div class="form__group"><label class="form__label form__label--required">Telefone / WhatsApp</label><input type="tel" class="form__input" name="p${i}_phone" placeholder="(00) 00000-0000" required></div></div><div class="form__group"><label class="form__label form__label--required">Nickname no Jogo (com #)</label><input type="text" class="form__input" name="p${i}_nick" placeholder="Ex: NickName#1234" required></div><div class="wizard-nav"><button type="button" class="btn btn--outline" onclick="wizardPrev()">Voltar</button><button type="button" class="btn btn--primary" onclick="wizardNext()">${i<5?'Próximo — Jogador '+(i+1):'Próximo — Confirmar'}</button></div></div>`;}
+
+/* Wizard */
+let cp=0;const tp=7;
+function updateWizard(){document.querySelectorAll('.wizard-page').forEach(p=>p.classList.remove('active'));const a=document.querySelector(`.wizard-page[data-page="${cp}"]`);if(a)a.classList.add('active');document.querySelectorAll('.wizard-step').forEach(s=>{s.classList.remove('active','done');});document.querySelectorAll('.wizard-step__line').forEach(l=>l.classList.remove('done'));const steps=document.querySelectorAll('.wizard-step'),lines=document.querySelectorAll('.wizard-step__line');steps.forEach((s,i)=>{if(i<cp)s.classList.add('done');else if(i===cp)s.classList.add('active');});lines.forEach((l,i)=>{if(i<cp)l.classList.add('done');});window.scrollTo({top:document.getElementById('wizardSteps').offsetTop-100,behavior:'smooth'});}
+function validatePage(){const pg=document.querySelector(`.wizard-page[data-page="${cp}"]`);const inps=pg.querySelectorAll('input[required]');let ok=true;inps.forEach(inp=>{if(!inp.value.trim()){inp.style.borderColor='var(--red-error)';ok=false;setTimeout(()=>{inp.style.borderColor='';},2000);}});if(cp===0){const m=pg.querySelector('input[name="modality"]');if(!m||!m.value){document.querySelector('.custom-select__trigger').style.borderColor='var(--red-error)';ok=false;setTimeout(()=>{document.querySelector('.custom-select__trigger').style.borderColor='';},2000);}}return ok;}
+function wizardNext(){if(validatePage()&&cp<tp-1){cp++;updateWizard();}}
+function wizardPrev(){if(cp>0){cp--;updateWizard();}}
+
+/* Submit */
+document.getElementById('registerForm').addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.target),p={};d.forEach((v,k)=>{p[k]=v;});p.submitted_at=new Date().toISOString();const r=JSON.parse(localStorage.getItem('arena_registrations')||'[]');r.push(p);localStorage.setItem('arena_registrations',JSON.stringify(r));e.target.style.display='none';document.getElementById('wizardSteps').style.display='none';document.getElementById('registerSuccess').classList.add('show');document.getElementById('registerSuccess').scrollIntoView({behavior:'smooth',block:'center'});});
+
+/* Phone mask */
+document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
+</script>
+</body>
+</html>
