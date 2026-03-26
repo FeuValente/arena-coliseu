@@ -7,12 +7,12 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 .bracket-game { margin-bottom: 70px; position: relative; }
-.bracket-game__header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.bracket-game__header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; justify-content: center; }
 .bracket-game__header img { height: 28px; }
 
-.bwrap { overflow-x: auto; padding: 10px 0 20px; position: relative; }
+.bwrap { overflow-x: auto; padding: 10px 0 20px; position: relative; display: flex; justify-content: center; }
 
-.btable { border-collapse: collapse; }
+.btable { border-collapse: collapse; margin: 0 auto; }
 .btable td { padding: 0; vertical-align: middle; }
 
 .bhead {
@@ -103,14 +103,14 @@ td.spacer { width: 36px; min-width: 36px; }
   <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 
-<section class="page-hero">
-  <a href="index.html" class="page-hero__back">
+<section class="page-hero" style="text-align:center;">
+  <a href="index.html" class="page-hero__back" style="justify-content:center;">
     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
     Voltar para Home
   </a>
   <div class="section__label">// Acompanhamento</div>
   <h1 class="section__title">Chaves do Torneio</h1>
-  <p class="section__desc">Acompanhe os confrontos e resultados. As chaves serão preenchidas após o sorteio em <strong>04 de maio</strong>.</p>
+  <p class="section__desc" style="margin:0 auto;">Acompanhe os confrontos e resultados. As chaves serão preenchidas após o sorteio em <strong>04 de maio</strong>.</p>
 </section>
 
 <section class="section" style="padding-top:20px;">

@@ -69,13 +69,22 @@
 .gallery-carousel::before, .gallery-carousel::after { content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2; pointer-events: none; }
 .gallery-carousel::before { left: 0; background: linear-gradient(to right, var(--black-light), transparent); }
 .gallery-carousel::after { right: 0; background: linear-gradient(to left, var(--black-light), transparent); }
-.gallery-track { display: flex; gap: 16px; animation: galleryScroll 35s linear infinite; width: max-content; }
-.gallery-track:hover { animation-play-state: paused; }
-@keyframes galleryScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.gallery-track { display: flex; gap: 16px; width: max-content; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
 .gallery-item { flex-shrink: 0; width: 360px; height: 260px; border-radius: 12px; overflow: hidden; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out-expo); }
 .gallery-item:hover img { transform: scale(1.06); }
-@media (max-width: 600px) { .gallery-item { width: 280px; height: 200px; } }
+.gallery-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: rgba(12,12,12,0.7); backdrop-filter: blur(8px);
+  color: var(--gold); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .3s, transform .3s, box-shadow .3s;
+}
+.gallery-arrow:hover { background: rgba(212,168,67,0.2); box-shadow: 0 0 15px rgba(212,168,67,0.2); transform: translateY(-50%) scale(1.1); }
+.gallery-arrow--left { left: 16px; }
+.gallery-arrow--right { right: 16px; }
+@media (max-width: 600px) { .gallery-item { width: 280px; height: 200px; } .gallery-arrow { width: 36px; height: 36px; font-size: 16px; } }
 
 /* INSCRICAO SECTION */
 .inscricao-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px auto 0; max-width: 750px; }
@@ -247,8 +256,14 @@
     <div class="section__label">// Edições Anteriores</div>
     <h2 class="section__title">A Arena em Ação</h2>
   </div>
-  <div class="gallery-carousel" data-reveal="scale" data-delay="100">
-    <div class="gallery-track">
+  <div class="gallery-carousel" data-reveal="scale" data-delay="100" id="galleryCarousel">
+    <button class="gallery-arrow gallery-arrow--left" id="galLeft" aria-label="Anterior">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <button class="gallery-arrow gallery-arrow--right" id="galRight" aria-label="Próximo">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
+    <div class="gallery-track" id="galleryTrack">
       <div class="gallery-item"><img src="assets/img/evento-1.jpg" alt="Arena Coliseu" loading="lazy"></div>
       <div class="gallery-item"><img src="assets/img/evento-2.jpeg" alt="Arena Coliseu" loading="lazy"></div>
       <div class="gallery-item"><img src="assets/img/evento-3.jpeg" alt="Arena Coliseu" loading="lazy"></div>
@@ -258,13 +273,6 @@
       <div class="gallery-item"><img src="assets/img/evento-7.jpg" alt="Arena Coliseu" loading="lazy"></div>
       <div class="gallery-item"><img src="assets/img/evento-8.jpg" alt="Arena Coliseu" loading="lazy"></div>
       <div class="gallery-item"><img src="assets/img/evento-9.jpg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-1.jpg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-2.jpeg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-3.jpeg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-4.jpg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-5.jpg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-6.jpg" alt="Arena Coliseu" loading="lazy"></div>
-      <div class="gallery-item"><img src="assets/img/evento-7.jpg" alt="Arena Coliseu" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -373,6 +381,26 @@ function closeNav(){hamburger.classList.remove('active');nav.classList.remove('o
 const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>x.target.classList.add('revealed'),+(x.target.dataset.delay||0));ro.unobserve(x.target);}});},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('[data-reveal]').forEach(el=>ro.observe(el));
 document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
+
+/* Gallery arrows */
+(function(){
+  var track=document.getElementById('galleryTrack');
+  var left=document.getElementById('galLeft');
+  var right=document.getElementById('galRight');
+  if(!track||!left||!right)return;
+  var pos=0;
+  var itemW=376; /* 360 + 16 gap */
+  var total=track.children.length;
+  var maxPos=-(total*itemW - track.parentElement.offsetWidth);
+  function update(){
+    if(pos>0)pos=0;
+    if(pos<maxPos)pos=maxPos;
+    track.style.transform='translateX('+pos+'px)';
+  }
+  right.addEventListener('click',function(){pos-=itemW*2;update();});
+  left.addEventListener('click',function(){pos+=itemW*2;update();});
+  window.addEventListener('resize',function(){maxPos=-(total*itemW-track.parentElement.offsetWidth);update();});
+})();
 </script>
 <script src="script-formularios.js"></script>
 </body>

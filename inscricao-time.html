@@ -176,6 +176,24 @@ function validatePage(){const pg=document.querySelector(`.wizard-page[data-page=
 function wizardNext(){if(validatePage()&&cp<tp-1){cp++;updateWizard();}}
 function wizardPrev(){if(cp>0){cp--;updateWizard();}}
 
+/* Bloquear Enter de enviar o form */
+document.getElementById('registerForm').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();}
+});
+
+/* Só permitir submit se estiver na última página e todos campos preenchidos */
+document.getElementById('registerForm').addEventListener('submit',function(e){
+  if(cp!==6){e.preventDefault();e.stopImmediatePropagation();return false;}
+  var allOk=true;
+  document.querySelectorAll('#registerForm input[type="text"],#registerForm input[type="email"],#registerForm input[type="tel"]').forEach(function(inp){
+    if(inp.name==='website_url')return;
+    if(!inp.value.trim())allOk=false;
+  });
+  var mod=document.querySelector('input[name="modality"]');
+  if(!mod||!mod.value)allOk=false;
+  if(!allOk){e.preventDefault();e.stopImmediatePropagation();return false;}
+},true);
+
 /* Phone mask */
 document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
 
