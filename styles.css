@@ -230,15 +230,22 @@ body::before {
 
 /* ---- FOOTER ---- */
 .footer {
-  padding: 50px clamp(20px, 5vw, 80px); border-top: 1px solid rgba(212,168,67,0.08);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  padding: 50px clamp(20px, 5vw, 80px) 30px; border-top: 1px solid rgba(212,168,67,0.08);
+  display: flex; flex-direction: column; gap: 20px;
 }
+.footer__top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
 .footer__brand { display: flex; align-items: center; gap: 12px; }
 .footer__logo { height: 36px; }
 .footer__copy { font-size: 13px; color: var(--gray); }
-.footer__links { display: flex; gap: 24px; }
+.footer__links { display: flex; gap: 24px; flex-wrap: wrap; }
 .footer__link { font-size: 13px; color: var(--gray-light); transition: color 0.25s; }
 .footer__link:hover { color: var(--gold); }
+.footer__location {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px; color: var(--gray); line-height: 1.5;
+}
+.footer__location svg { width: 16px; height: 16px; fill: var(--gold-dim); flex-shrink: 0; margin-top: 1px; }
 
 /* ---- PAGE HEADER (for sub-pages) ---- */
 .page-hero {

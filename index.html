@@ -78,10 +78,10 @@
 @media (max-width: 600px) { .gallery-item { width: 280px; height: 200px; } }
 
 /* INSCRICAO SECTION */
-.inscricao-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; max-width: 700px; }
+.inscricao-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px auto 0; max-width: 750px; }
 .inscricao-card {
   background: var(--black-card); border: 2px solid rgba(212,168,67,0.15); border-radius: 16px;
-  padding: 36px 28px; text-align: center; transition: border-color .3s, transform .3s, box-shadow .3s;
+  padding: 48px 32px; text-align: center; transition: border-color .3s, transform .3s, box-shadow .3s;
   position: relative; overflow: hidden;
   box-shadow: 0 0 20px rgba(212,168,67,0.08), inset 0 0 20px rgba(212,168,67,0.02);
   animation: inscricaoGlow 2.5s ease-in-out infinite alternate;
@@ -97,9 +97,10 @@
 }
 @keyframes inscricaoSweep { 0% { left: -50px; } 50% { left: calc(100% + 50px); } 100% { left: -50px; } }
 .inscricao-card:hover { border-color: var(--gold); transform: translateY(-6px); box-shadow: 0 0 40px rgba(212,168,67,0.3), inset 0 0 30px rgba(212,168,67,0.05); }
-.inscricao-card svg { width: 48px; height: 48px; fill: var(--gold); margin-bottom: 16px; }
-.inscricao-card h3 { font-family: var(--font-display); font-size: 24px; color: var(--white); letter-spacing: .05em; margin-bottom: 8px; }
-.inscricao-card p { font-size: 13px; color: var(--gray-light); margin-bottom: 20px; line-height: 1.6; }
+.inscricao-card svg { width: 56px; height: 56px; fill: var(--gold); margin-bottom: 20px; }
+.inscricao-card h3 { font-family: var(--font-display); font-size: 28px; color: var(--white); letter-spacing: .05em; margin-bottom: 10px; }
+.inscricao-card p { font-size: 14px; color: var(--gray-light); margin-bottom: 24px; line-height: 1.6; }
+.inscricao-card .btn { font-size: 16px; padding: 14px 28px; }
 
 /* Grande Final glow in format section */
 .bracket-stage--final {
@@ -163,7 +164,7 @@
     <div class="about__text" data-reveal="left" data-delay="100">
       <p>A <strong>Arena Coliseu</strong> é um campeonato de eSports <strong>100% gratuito</strong>, criado e organizado de forma voluntária por estudantes da UTFPR Campus Ponta Grossa.</p>
       <p>De estudante para estudante — a Arena nasceu da vontade de unir a comunidade gamer dentro da universidade e vem crescendo a cada edição. Em 2024, começamos como piloto. Em 2025, ampliamos. Agora, em 2026, a maior edição de todas.</p>
-      <p>A Arena Coliseu faz parte da <strong>Innova Week</strong>, a semana de inovação e empreendedorismo da UTFPR, que reúne mais de <strong>2.000 pessoas</strong> entre estudantes, comunidade e profissionais.</p>
+      <p>A Arena Coliseu faz parte da <strong>INOVAWEEK</strong>, a semana de inovação e empreendedorismo da UTFPR, que reúne mais de <strong>2.000 pessoas</strong> entre estudantes, comunidade e profissionais.</p>
     </div>
     <div class="about__cards" data-reveal="right" data-delay="200">
       <div class="about__card">
@@ -233,6 +234,7 @@
   </div>
   <div class="format__timeline" data-reveal data-delay="200">
     <div class="tl-item"><div class="tl-item__date">01 — 30 ABR</div><div class="tl-item__title">Inscrições</div><div class="tl-item__desc">Formulário aberto por 30 dias</div></div>
+    <div class="tl-item"><div class="tl-item__date">01 — 03 MAI</div><div class="tl-item__title">Aprovação de Equipes</div><div class="tl-item__desc">Validação dos dados e confirmação</div></div>
     <div class="tl-item"><div class="tl-item__date">04 MAI</div><div class="tl-item__title">Sorteio das Chaves</div><div class="tl-item__desc">Ao vivo no Discord</div></div>
     <div class="tl-item"><div class="tl-item__date">05 — 22 MAI</div><div class="tl-item__title">Fases Online</div><div class="tl-item__desc">Oitavas, quartas e semifinal</div></div>
     <div class="tl-item"><div class="tl-item__date">29 MAI</div><div class="tl-item__title">Grande Final</div><div class="tl-item__desc">Presencial na UTFPR PG</div></div>
@@ -298,7 +300,7 @@
   <div class="sponsors-carousel" data-reveal data-delay="100">
     <div class="sponsors-track">
       <img src="assets/img/patrocinadores/logo-utfpr.png" alt="UTFPR" class="sponsor-logo-img">
-      <img src="assets/img/patrocinadores/logo-inovaweek.png" alt="Innova Week" class="sponsor-logo-img">
+      <img src="assets/img/patrocinadores/logo-inovaweek.png" alt="INOVAWEEK" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-valedostrilhos.png" alt="Vale dos Trilhos" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-sprint.png" alt="Sprint" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-cola3d.png" alt="Cola 3D" class="sponsor-logo-img">
@@ -308,7 +310,7 @@
       <img src="assets/img/patrocinadores/logo-proem.png" alt="Proem" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-publiflow.png" alt="Publiflow" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-utfpr.png" alt="UTFPR" class="sponsor-logo-img">
-      <img src="assets/img/patrocinadores/logo-inovaweek.png" alt="Innova Week" class="sponsor-logo-img">
+      <img src="assets/img/patrocinadores/logo-inovaweek.png" alt="INOVAWEEK" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-valedostrilhos.png" alt="Vale dos Trilhos" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-sprint.png" alt="Sprint" class="sponsor-logo-img">
       <img src="assets/img/patrocinadores/logo-cola3d.png" alt="Cola 3D" class="sponsor-logo-img">
@@ -341,15 +343,22 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer__brand">
-    <img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo">
-    <span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR Ponta Grossa</span>
+  <div class="footer__top">
+    <div class="footer__brand">
+      <img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo">
+      <span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR Ponta Grossa</span>
+    </div>
+    <div class="footer__links">
+      <a href="inscricao-time.html" class="footer__link">Inscrever Time</a>
+      <a href="inscricao-espectador.html" class="footer__link">Espectador</a>
+      <a href="chaves.html" class="footer__link">Chaves</a>
+      <a href="https://discord.gg/xNKTTEwS" target="_blank" class="footer__link">Discord</a>
+      <a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="footer__link">Instagram</a>
+    </div>
   </div>
-  <div class="footer__links">
-    <a href="inscricao-time.html" class="footer__link">Inscrever Time</a>
-    <a href="inscricao-espectador.html" class="footer__link">Espectador</a>
-    <a href="chaves.html" class="footer__link">Chaves</a>
-    <a href="https://discord.gg/SEU_LINK_AQUI" target="_blank" class="footer__link">Discord</a>
+  <div class="footer__location">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    <span>UTFPR Campus Ponta Grossa — R. Dr. Washington Subtil Chueire, 330 — Jardim Carvalho — CEP 84017-220 — Ponta Grossa, PR</span>
   </div>
 </footer>
 

@@ -6,135 +6,87 @@
 <title>Chaves do Torneio — Arena Coliseu</title>
 <link rel="stylesheet" href="styles.css">
 <style>
-/* BRACKET STYLES */
-.bracket-section { padding-bottom: 40px; }
-.bracket-game { margin-bottom: 80px; }
-.bracket-game__header { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; }
+.bracket-game { margin-bottom: 70px; position: relative; }
+.bracket-game__header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
 .bracket-game__header img { height: 28px; }
-.bracket-game__header span { font-family: var(--font-display); font-size: 28px; color: var(--white); letter-spacing: .05em; }
 
-/* Bracket grid - triangle shape */
-.bracket-wrapper {
-  display: flex; gap: 0; align-items: stretch; overflow-x: auto;
-  padding: 20px 0; -webkit-overflow-scrolling: touch;
-}
-.bracket-round {
-  display: flex; flex-direction: column; justify-content: space-around; min-width: 190px; position: relative;
-}
-.bracket-round__title {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--gold-dim); text-align: center; margin-bottom: 16px;
-  position: sticky; top: 0;
-}
+.bwrap { overflow-x: auto; padding: 10px 0 20px; position: relative; }
 
-/* Match card */
-.bracket-match {
-  background: var(--black-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;
-  overflow: hidden; margin: 8px 0; position: relative; transition: border-color .3s;
-}
-.bracket-match:hover { border-color: rgba(212,168,67,0.2); }
-.bracket-team {
-  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-  font-size: 13px; color: var(--gray-light); transition: background .2s;
-}
-.bracket-team + .bracket-team { border-top: 1px solid rgba(255,255,255,0.04); }
-.bracket-team__slot {
-  width: 28px; height: 28px; border-radius: 6px; background: var(--gray-dark);
-  display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--gray); flex-shrink: 0;
-}
-.bracket-team__name { flex: 1; }
-.bracket-team__score { font-family: var(--font-mono); font-weight: 600; color: var(--gray); min-width: 16px; text-align: center; }
-.bracket-team.winner { color: var(--gold); }
-.bracket-team.winner .bracket-team__score { color: var(--gold); }
+.btable { border-collapse: collapse; }
+.btable td { padding: 0; vertical-align: middle; }
 
-/* Connector lines */
-.bracket-connectors {
-  display: flex; flex-direction: column; justify-content: space-around; width: 40px; min-width: 40px;
-  position: relative;
+.bhead {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--gold-dim); text-align: center;
+  padding: 0 4px 10px; white-space: nowrap;
 }
-.connector-line {
-  position: relative; flex: 1; display: flex; align-items: center;
+.bhead--final { color: var(--gold); font-size: 11px; }
+
+td.bmcell { padding: 5px 4px; width: 155px; min-width: 155px; }
+td.spacer { width: 36px; min-width: 36px; }
+
+.bmatch {
+  background: var(--black-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px; transition: border-color .3s;
 }
-.connector-line::before {
-  content: ''; position: absolute; right: 0; width: 20px;
-  border: 1px solid rgba(212,168,67,0.15); border-left: none;
+.bmatch:hover { border-color: rgba(212,168,67,0.25); }
+.bteam {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; font-size: 12px; color: var(--gray-light);
 }
-.connector-line::after {
-  content: ''; position: absolute; left: 0; width: 20px; height: 1px;
-  background: rgba(212,168,67,0.15);
+.bteam + .bteam { border-top: 1px solid rgba(255,255,255,0.04); }
+.bteam__slot {
+  width: 22px; height: 22px; border-radius: 4px; background: var(--gray-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--gray); flex-shrink: 0;
+}
+.bteam__name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bteam__score { font-family: var(--font-mono); font-weight: 600; color: var(--gray); }
+
+/* Lines SVG overlay */
+.bracket-lines {
+  position: absolute; top: 0; left: 0;
+  pointer-events: none; z-index: 0;
+}
+.bracket-lines line {
+  stroke: rgba(212,168,67,0.35);
+  stroke-width: 2;
 }
 
-/* SVG connectors */
-.bracket-svg-connectors {
-  width: 40px; min-width: 40px; position: relative;
+/* Final */
+.final-label {
+  font-family: var(--font-display); font-size: 13px; letter-spacing: .15em;
+  color: var(--gold); text-align: center; margin-bottom: 4px; text-transform: uppercase;
 }
-.bracket-svg-connectors svg { width: 100%; height: 100%; }
-.bracket-svg-connectors line, .bracket-svg-connectors path {
-  stroke: rgba(212,168,67,0.2); stroke-width: 1; fill: none;
+.final-sub {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold-dim); text-align: center; margin-bottom: 8px;
 }
-
-/* FINAL MATCH - Glowing border animation */
-.bracket-match--final {
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-  border-radius: 10px;
-}
-.bracket-match--final::before {
-  content: ''; position: absolute; inset: -2px; border-radius: 10px; z-index: -1;
-  background: conic-gradient(from var(--angle, 0deg), var(--gold-bright), transparent 30%, var(--gold), transparent 60%, var(--gold-deep), transparent 90%);
-  animation: rotateBorder 3s linear infinite;
-}
-.bracket-match--final::after {
-  content: ''; position: absolute; inset: 0; border-radius: 8px;
-  background: var(--black-card); z-index: -1;
-}
-@property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
-@keyframes rotateBorder { to { --angle: 360deg; } }
-
-/* Fallback for browsers without @property */
-@supports not (background: conic-gradient(from 0deg, red, blue)) {
-  .bracket-match--final { border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(212,168,67,0.2); }
-  .bracket-match--final::before { display: none; }
-}
-
-/* Alternative glow for wider support */
-.bracket-match--final {
-  box-shadow: 0 0 15px rgba(212,168,67,0.15), inset 0 0 15px rgba(212,168,67,0.03);
+.bmatch--final {
+  border: 2px solid var(--gold-dim); border-radius: 8px;
+  position: relative; overflow: hidden;
   animation: finalGlow 2s ease-in-out infinite alternate;
 }
 @keyframes finalGlow {
-  0% { box-shadow: 0 0 15px rgba(212,168,67,0.15), inset 0 0 15px rgba(212,168,67,0.03); border-color: var(--gold-dim); }
-  100% { box-shadow: 0 0 30px rgba(212,168,67,0.3), inset 0 0 20px rgba(212,168,67,0.05); border-color: var(--gold); }
+  0% { box-shadow: 0 0 15px rgba(212,168,67,0.15); border-color: var(--gold-dim); }
+  100% { box-shadow: 0 0 30px rgba(212,168,67,0.35); border-color: var(--gold); }
 }
-
-/* Sweeping light effect on final match border */
-.bracket-match--final .sweep-light {
-  position: absolute; inset: -2px; border-radius: 10px; z-index: 1; pointer-events: none; overflow: hidden;
+.bmatch--final .sweep {
+  position: absolute; inset: -2px; border-radius: 10px;
+  z-index: 1; pointer-events: none; overflow: hidden;
 }
-.bracket-match--final .sweep-light::before {
+.bmatch--final .sweep::before {
   content: ''; position: absolute; width: 40px; height: 200%;
   top: -50%; left: -40px;
-  background: linear-gradient(90deg, transparent, rgba(245,197,66,0.4), transparent);
-  animation: sweepAround 3s ease-in-out infinite;
-  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(245,197,66,0.35), transparent);
+  animation: sweepAround 3s ease-in-out infinite; transform: skewX(-20deg);
 }
-@keyframes sweepAround {
-  0% { left: -40px; }
-  50% { left: calc(100% + 40px); }
-  100% { left: -40px; }
-}
+@keyframes sweepAround { 0%{left:-40px} 50%{left:calc(100% + 40px)} 100%{left:-40px} }
 
-/* Final label */
-.final-label {
-  font-family: var(--font-display); font-size: 14px; letter-spacing: .15em;
-  color: var(--gold); text-align: center; margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-@media (max-width: 600px) {
-  .bracket-round { min-width: 160px; }
-  .bracket-team { padding: 8px 10px; font-size: 12px; }
+@media (max-width: 700px) {
+  td.bmcell { width: 120px; min-width: 120px; }
+  td.spacer { width: 24px; min-width: 24px; }
+  .bteam { padding: 5px 7px; font-size: 11px; }
 }
 </style>
 </head>
@@ -158,32 +110,29 @@
   </a>
   <div class="section__label">// Acompanhamento</div>
   <h1 class="section__title">Chaves do Torneio</h1>
-  <p class="section__desc">Acompanhe os confrontos e resultados de cada fase. As chaves serão preenchidas após o sorteio em <strong>04 de maio</strong>.</p>
+  <p class="section__desc">Acompanhe os confrontos e resultados. As chaves serão preenchidas após o sorteio em <strong>04 de maio</strong>.</p>
 </section>
 
-<section class="section bracket-section" style="padding-top:20px;">
-
-  <!-- CS2 -->
+<section class="section" style="padding-top:20px;">
   <div class="bracket-game" data-reveal>
-    <div class="bracket-game__header">
-      <img src="assets/img/logo-counter-strike-2.png" alt="CS2">
-    </div>
-    <div class="bracket-wrapper" id="cs2Bracket"></div>
+    <div class="bracket-game__header"><img src="assets/img/logo-counter-strike-2.png" alt="CS2"></div>
+    <div class="bwrap" id="cs2Wrap"><div id="cs2Bracket"></div></div>
   </div>
-
-  <!-- Valorant -->
   <div class="bracket-game" data-reveal data-delay="200">
-    <div class="bracket-game__header">
-      <img src="assets/img/logo-valorant.png" alt="Valorant">
-    </div>
-    <div class="bracket-wrapper" id="valBracket"></div>
+    <div class="bracket-game__header"><img src="assets/img/logo-valorant.png" alt="Valorant"></div>
+    <div class="bwrap" id="valWrap"><div id="valBracket"></div></div>
   </div>
-
 </section>
 
 <footer class="footer">
-  <div class="footer__brand"><img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo"><span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR PG</span></div>
-  <div class="footer__links"><a href="index.html" class="footer__link">Home</a><a href="inscricao-time.html" class="footer__link">Inscrever Time</a><a href="https://discord.gg/SEU_LINK_AQUI" target="_blank" class="footer__link">Discord</a></div>
+  <div class="footer__top">
+    <div class="footer__brand"><img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo"><span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR Ponta Grossa</span></div>
+    <div class="footer__links"><a href="index.html" class="footer__link">Home</a><a href="inscricao-time.html" class="footer__link">Inscrever Time</a><a href="https://discord.gg/xNKTTEwS" target="_blank" class="footer__link">Discord</a><a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="footer__link">Instagram</a></div>
+  </div>
+  <div class="footer__location">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    <span>UTFPR Campus Ponta Grossa — R. Dr. Washington Subtil Chueire, 330 — Jardim Carvalho — CEP 84017-220 — Ponta Grossa, PR</span>
+  </div>
 </footer>
 
 <script>
@@ -191,100 +140,184 @@ const header=document.getElementById('header');window.addEventListener('scroll',
 const hamburger=document.getElementById('hamburger'),nav=document.getElementById('nav');hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';});function closeNav(){hamburger.classList.remove('active');nav.classList.remove('open');document.body.style.overflow='';}
 const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>x.target.classList.add('revealed'),+(x.target.dataset.delay||0));ro.unobserve(x.target);}});},{threshold:.1,rootMargin:'0px 0px -20px 0px'});document.querySelectorAll('[data-reveal]').forEach(el=>ro.observe(el));
 
-/* Generate bracket */
-function createMatch(t1,s1,t2,s2,isFinal){
-  const cls = isFinal ? 'bracket-match bracket-match--final' : 'bracket-match';
-  const sweep = isFinal ? '<div class="sweep-light"></div>' : '';
-  return `<div class="${cls}" style="position:relative;">
-    ${sweep}
-    <div class="bracket-team" style="position:relative;z-index:2;"><span class="bracket-team__slot">?</span><span class="bracket-team__name">${t1}</span><span class="bracket-team__score">${s1}</span></div>
-    <div class="bracket-team" style="position:relative;z-index:2;"><span class="bracket-team__slot">?</span><span class="bracket-team__name">${t2}</span><span class="bracket-team__score">${s2}</span></div>
-  </div>`;
+const T = 'A definir';
+
+function mb(isFinal, dataId, label) {
+  const cls = isFinal ? 'bmatch bmatch--final' : 'bmatch';
+  const sw = isFinal ? '<div class="sweep"></div>' : '';
+  const lbl = label ? `<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-dim);text-align:center;padding:4px 0 2px;position:relative;z-index:2;">${label}</div>` : '';
+  return `${lbl}<div class="${cls}" data-mid="${dataId}">${sw}<div class="bteam" style="position:relative;z-index:2"><span class="bteam__slot">?</span><span class="bteam__name">${T}</span><span class="bteam__score">-</span></div><div class="bteam" style="position:relative;z-index:2"><span class="bteam__slot">?</span><span class="bteam__name">${T}</span><span class="bteam__score">-</span></div></div>`;
 }
 
-function createConnectors(count){
-  // SVG-based connectors that link matches to next round
-  const h = count * 80; // approximate height
-  let svg = `<div class="bracket-svg-connectors"><svg viewBox="0 0 40 ${h}" preserveAspectRatio="none" style="width:40px;height:100%;">`;
-  const gap = h / count;
-  for(let i = 0; i < count; i += 2){
-    const y1 = gap * i + gap/2;
-    const y2 = gap * (i+1) + gap/2;
-    const midY = (y1 + y2) / 2;
-    svg += `<line x1="0" y1="${y1}" x2="20" y2="${y1}" />`;
-    svg += `<line x1="0" y1="${y2}" x2="20" y2="${y2}" />`;
-    svg += `<line x1="20" y1="${y1}" x2="20" y2="${y2}" />`;
-    svg += `<line x1="20" y1="${midY}" x2="40" y2="${midY}" />`;
+function buildBracket(id) {
+  // Rounds: L-oitavas(4), L-quartas(2), L-semi(1), FINAL(1), R-semi(1), R-quartas(2), R-oitavas(4)
+  // 8 data rows. Matches use rowspan for centering.
+  let html = '<table class="btable">';
+
+  // Header
+  html += '<tr>';
+  html += '<td class="bhead">Oitavas</td><td class="spacer"></td>';
+  html += '<td class="bhead">Quartas</td><td class="spacer"></td>';
+  html += '<td class="bhead">Semifinal</td><td class="spacer"></td>';
+  html += '<td class="bhead bhead--final">Grande Final</td><td class="spacer"></td>';
+  html += '<td class="bhead">Semifinal</td><td class="spacer"></td>';
+  html += '<td class="bhead">Quartas</td><td class="spacer"></td>';
+  html += '<td class="bhead">Oitavas</td>';
+  html += '</tr>';
+
+  for (let r = 0; r < 8; r++) {
+    html += '<tr>';
+
+    // Jogo labels: Oitavas L = jogos 1-4, Quartas L = jogos 5-6, Semi L = jogo 7
+    // Final = jogo final, Semi R = jogo 8, Quartas R = jogos 9-10, Oitavas R = jogos 11-14
+    const loNum = r/2; // 0,1,2,3
+
+    // Col 0: Oitavas L (4 matches, rowspan 2)
+    if (r % 2 === 0) html += `<td class="bmcell" rowspan="2">${mb(false, id+'_lo'+loNum, 'Jogo '+(loNum+1))}</td>`;
+    // Col 1: spacer
+    if (r % 2 === 0) html += '<td class="spacer" rowspan="2"></td>';
+    // Col 2: Quartas L (2 matches, rowspan 4)
+    if (r % 4 === 0) html += `<td class="bmcell" rowspan="4">${mb(false, id+'_lq'+r/4, 'Jogo '+(5+r/4))}</td>`;
+    // Col 3: spacer
+    if (r % 4 === 0) html += '<td class="spacer" rowspan="4"></td>';
+    // Col 4: Semi L (1 match, rowspan 8)
+    if (r === 0) html += `<td class="bmcell" rowspan="8">${mb(false, id+'_ls0', 'Jogo 7')}</td>`;
+    // Col 5: spacer
+    if (r === 0) html += '<td class="spacer" rowspan="8"></td>';
+    // Col 6: FINAL (rowspan 8)
+    if (r === 0) html += `<td class="bmcell" rowspan="8" style="width:180px;min-width:180px;"><div class="final-label">Final</div><div class="final-sub">MD3 — Presencial — 29 de Maio</div>${mb(true, id+'_f')}</td>`;
+    // Col 7: spacer
+    if (r === 0) html += '<td class="spacer" rowspan="8"></td>';
+    // Col 8: Semi R (1 match, rowspan 8)
+    if (r === 0) html += `<td class="bmcell" rowspan="8">${mb(false, id+'_rs0', 'Jogo 8')}</td>`;
+    // Col 9: spacer
+    if (r % 4 === 0) html += '<td class="spacer" rowspan="4"></td>';
+    // Col 10: Quartas R (2 matches, rowspan 4)
+    if (r % 4 === 0) html += `<td class="bmcell" rowspan="4">${mb(false, id+'_rq'+r/4, 'Jogo '+(9+r/4))}</td>`;
+    // Col 11: spacer
+    if (r % 2 === 0) html += '<td class="spacer" rowspan="2"></td>';
+    // Col 12: Oitavas R (4 matches, rowspan 2)
+    if (r % 2 === 0) html += `<td class="bmcell" rowspan="2">${mb(false, id+'_ro'+loNum, 'Jogo '+(11+loNum))}</td>`;
+
+    html += '</tr>';
   }
-  svg += '</svg></div>';
-  return svg;
+  html += '</table>';
+  document.getElementById(id).innerHTML = html;
 }
 
-function buildBracket(containerId){
-  const c = document.getElementById(containerId);
-  const tbd = 'A definir';
-  let html = '';
+// Draw lines connecting matches
+function drawLines(wrapId, bracketId) {
+  const wrap = document.getElementById(wrapId);
+  // Remove old SVG
+  const old = wrap.querySelector('.bracket-lines');
+  if (old) old.remove();
 
-  // Oitavas (8 matches)
-  html += '<div class="bracket-round"><div class="bracket-round__title">Oitavas</div>';
-  for(let i=0;i<8;i++) html += createMatch(tbd,'-',tbd,'-',false);
-  html += '</div>';
+  const wRect = wrap.getBoundingClientRect();
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('bracket-lines');
+  svg.setAttribute('width', wrap.scrollWidth);
+  svg.setAttribute('height', wrap.scrollHeight);
+  svg.style.width = wrap.scrollWidth + 'px';
+  svg.style.height = wrap.scrollHeight + 'px';
+  wrap.appendChild(svg);
 
-  // Connector oitavas->quartas
-  html += '<div class="bracket-svg-connectors" style="width:40px;min-width:40px;display:flex;align-items:stretch;">';
-  html += '<svg width="40" height="100%" viewBox="0 0 40 640" preserveAspectRatio="none" style="width:40px;">';
-  for(let i=0;i<8;i+=2){
-    const y1 = 40 + i*80; const y2 = 40 + (i+1)*80;
-    const mid = (y1+y2)/2;
-    html += `<line x1="0" y1="${y1}" x2="16" y2="${y1}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="0" y1="${y2}" x2="16" y2="${y2}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="16" y1="${y1}" x2="16" y2="${y2}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="16" y1="${mid}" x2="40" y2="${mid}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
+  function pos(mid) {
+    const el = wrap.querySelector(`[data-mid="${mid}"]`);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return {
+      cx: r.left + r.width / 2 - wRect.left,
+      cy: r.top + r.height / 2 - wRect.top,
+      l: r.left - wRect.left,
+      r: r.right - wRect.left,
+      t: r.top - wRect.top,
+      b: r.bottom - wRect.top
+    };
   }
-  html += '</svg></div>';
 
-  // Quartas (4 matches)
-  html += '<div class="bracket-round" style="justify-content:space-around;"><div class="bracket-round__title">Quartas</div>';
-  for(let i=0;i<4;i++) html += createMatch(tbd,'-',tbd,'-',false);
-  html += '</div>';
-
-  // Connector quartas->semi
-  html += '<div class="bracket-svg-connectors" style="width:40px;min-width:40px;display:flex;align-items:stretch;">';
-  html += '<svg width="40" height="100%" viewBox="0 0 40 320" preserveAspectRatio="none" style="width:40px;">';
-  for(let i=0;i<4;i+=2){
-    const y1 = 40 + i*80; const y2 = 40 + (i+1)*80; const mid = (y1+y2)/2;
-    html += `<line x1="0" y1="${y1}" x2="16" y2="${y1}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="0" y1="${y2}" x2="16" y2="${y2}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="16" y1="${y1}" x2="16" y2="${y2}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
-    html += `<line x1="16" y1="${mid}" x2="40" y2="${mid}" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>`;
+  function line(x1, y1, x2, y2) {
+    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    svg.appendChild(l);
   }
-  html += '</svg></div>';
 
-  // Semi (2 matches)
-  html += '<div class="bracket-round" style="justify-content:space-around;"><div class="bracket-round__title">Semifinal</div>';
-  for(let i=0;i<2;i++) html += createMatch(tbd,'-',tbd,'-',false);
-  html += '</div>';
+  // Connect two source matches to one target (merge)
+  function merge(src1, src2, tgt) {
+    const s1 = pos(src1), s2 = pos(src2), t = pos(tgt);
+    if (!s1 || !s2 || !t) return;
+    const xMid = (s1.r + t.l) / 2;
+    // Horizontal from src1 right to midpoint
+    line(s1.r, s1.cy, xMid, s1.cy);
+    // Horizontal from src2 right to midpoint
+    line(s2.r, s2.cy, xMid, s2.cy);
+    // Vertical connecting them
+    line(xMid, s1.cy, xMid, s2.cy);
+    // Horizontal from midpoint to target
+    const midY = (s1.cy + s2.cy) / 2;
+    line(xMid, midY, t.l, t.cy);
+  }
 
-  // Connector semi->final
-  html += '<div class="bracket-svg-connectors" style="width:40px;min-width:40px;display:flex;align-items:stretch;">';
-  html += '<svg width="40" height="100%" viewBox="0 0 40 160" preserveAspectRatio="none" style="width:40px;">';
-  html += '<line x1="0" y1="40" x2="16" y2="40" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>';
-  html += '<line x1="0" y1="120" x2="16" y2="120" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>';
-  html += '<line x1="16" y1="40" x2="16" y2="120" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>';
-  html += '<line x1="16" y1="80" x2="40" y2="80" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>';
-  html += '</svg></div>';
+  // Connect one source to one target (straight)
+  function straight(src, tgt) {
+    const s = pos(src), t = pos(tgt);
+    if (!s || !t) return;
+    line(s.r, s.cy, t.l, t.cy);
+  }
 
-  // Final (1 match - with glow)
-  html += '<div class="bracket-round" style="justify-content:center;"><div class="bracket-round__title" style="color:var(--gold);">Grande Final</div>';
-  html += '<div class="final-label">MD3 — Presencial</div>';
-  html += createMatch(tbd,'-',tbd,'-',true);
-  html += '</div>';
+  // Connect one target to two sources (split - right side, target is on left)
+  function split(tgt, dst1, dst2) {
+    const t = pos(tgt), d1 = pos(dst1), d2 = pos(dst2);
+    if (!t || !d1 || !d2) return;
+    const xMid = (t.r + d1.l) / 2;
+    const midY = (d1.cy + d2.cy) / 2;
+    // Horizontal from target right to midpoint
+    line(t.r, t.cy, xMid, midY);
+    // Vertical splitting
+    line(xMid, d1.cy, xMid, d2.cy);
+    // Horizontal to dst1
+    line(xMid, d1.cy, d1.l, d1.cy);
+    // Horizontal to dst2
+    line(xMid, d2.cy, d2.l, d2.cy);
+  }
 
-  c.innerHTML = html;
+  const p = bracketId;
+
+  // LEFT SIDE
+  // Oitavas L -> Quartas L
+  merge(p+'_lo0', p+'_lo1', p+'_lq0');
+  merge(p+'_lo2', p+'_lo3', p+'_lq1');
+  // Quartas L -> Semi L
+  merge(p+'_lq0', p+'_lq1', p+'_ls0');
+  // Semi L -> Final
+  straight(p+'_ls0', p+'_f');
+
+  // RIGHT SIDE
+  // Final -> Semi R
+  straight(p+'_f', p+'_rs0');
+  // Semi R -> Quartas R
+  split(p+'_rs0', p+'_rq0', p+'_rq1');
+  // Quartas R -> Oitavas R
+  split(p+'_rq0', p+'_ro0', p+'_ro1');
+  split(p+'_rq1', p+'_ro2', p+'_ro3');
 }
 
+// Build tables
 buildBracket('cs2Bracket');
 buildBracket('valBracket');
+
+// Draw lines after layout
+requestAnimationFrame(() => {
+  setTimeout(() => {
+    drawLines('cs2Wrap', 'cs2Bracket');
+    drawLines('valWrap', 'valBracket');
+  }, 200);
+});
+
+window.addEventListener('resize', () => {
+  drawLines('cs2Wrap', 'cs2Bracket');
+  drawLines('valWrap', 'valBracket');
+});
 </script>
 </body>
 </html>
