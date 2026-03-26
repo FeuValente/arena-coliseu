@@ -64,7 +64,7 @@
       <div class="wizard-step" data-step="6"><span class="wizard-step__num"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span><span class="wizard-step__label">Enviar</span></div>
     </div>
 
-    <form class="form" id="registerForm" data-reveal data-delay="150">
+    <form class="form" id="registerForm" data-reveal data-delay="150" novalidate>
       <!-- Page 0: Team -->
       <div class="wizard-page active" data-page="0">
         <h3 style="font-family:var(--font-display);font-size:24px;color:var(--gold);letter-spacing:.05em;margin:0 0 20px;">Dados da Equipe</h3>
@@ -127,11 +127,11 @@
           </div>
         </div>
         <label style="display:flex;align-items:flex-start;gap:10px;margin:20px 0 16px;cursor:pointer;font-size:13px;color:var(--gray-light);">
-          <input type="checkbox" id="aceitarTermos" style="width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--gold);cursor:pointer;">
+          <input type="checkbox" style="width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--gold);cursor:pointer;">
           <span>Li e concordo com o <a href="#" target="_blank" style="color:var(--gold);text-decoration:underline;">edital de participação</a> e as regras do campeonato. Estou ciente da doação obrigatória de 1 kg de alimento e da entrada obrigatória no Discord.</span>
         </label>
         <input type="text" name="website_url" style="position:absolute;left:-9999px;opacity:0;height:0;" tabindex="-1" autocomplete="off">
-        <div class="wizard-nav"><button type="button" class="btn btn--outline" onclick="wizardPrev()">Voltar</button><button type="submit" class="btn btn--primary" id="btnEnviar" disabled style="opacity:0.4;cursor:not-allowed;">Enviar Inscrição</button></div>
+        <div class="wizard-nav"><button type="button" class="btn btn--outline" onclick="wizardPrev()">Voltar</button><button type="submit" class="btn btn--primary">Enviar Inscrição</button></div>
       </div>
     </form>
 
@@ -179,9 +179,6 @@ function wizardPrev(){if(cp>0){cp--;updateWizard();}}
 /* Phone mask */
 document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
 
-/* Checkbox termos */
-var chk=document.getElementById('aceitarTermos'),btnE=document.getElementById('btnEnviar');
-if(chk&&btnE){chk.addEventListener('change',function(){btnE.disabled=!this.checked;btnE.style.opacity=this.checked?'1':'0.4';btnE.style.cursor=this.checked?'pointer':'not-allowed';});}
 </script>
 <script src="script-formularios.js"></script>
 </body>
