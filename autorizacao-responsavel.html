@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autorização do Responsável — Arena Coliseu 3ª Edição</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --gold: #D4A843;
+    --gold-bright: #F5C542;
+    --gold-deep: #C8962E;
+    --black: #0C0C0C;
+    --gray: #555;
+    --gray-light: #888;
+}
+
+@page { size: A4; margin: 1.2cm; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: #0C0C0C;
+    color: #2a2a2a;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 1000px) {
+    .layout { grid-template-columns: 1fr; }
+}
+
+/* Form panel */
+.form-panel {
+    background: #161616;
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 12px;
+    padding: 24px;
+    color: #f0ece3;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+.form-panel h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    margin-bottom: 4px;
+}
+.form-panel__desc {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+.form-panel__section {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 18px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(212,168,67,0.15);
+}
+.form-panel__group { margin-bottom: 10px; }
+.form-panel__label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+}
+.form-panel__input,
+.form-panel__select {
+    width: 100%;
+    padding: 8px 12px;
+    background: #0C0C0C;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+.form-panel__input:focus,
+.form-panel__select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(212,168,67,0.12);
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform .2s, box-shadow .2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+.btn--primary { background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: var(--black); margin-top: 18px; }
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212,168,67,0.35); }
+.btn--ghost { background: transparent; color: var(--gold); border: 1px solid rgba(212,168,67,0.4); margin-top: 8px; }
+.btn--ghost:hover { background: rgba(212,168,67,0.08); }
+
+/* Document sheet */
+.sheet {
+    background: #fff;
+    padding: 28px 38px;
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    color: #2a2a2a;
+    line-height: 1.4;
+    font-size: 11px;
+}
+
+.header {
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    position: relative;
+}
+.header::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--gold-deep);
+}
+.header__edition {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--gold-deep);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.header__brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: #0C0C0C;
+    line-height: 1;
+}
+.header__brand span { color: var(--gold-deep); }
+.header__sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--gray);
+    margin-top: 2px;
+    text-transform: uppercase;
+}
+
+.doc-title { text-align: center; margin: 10px 0 14px; }
+.doc-title h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #0C0C0C;
+    text-transform: uppercase;
+}
+.doc-title__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--gold-deep);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: #0C0C0C;
+    text-transform: uppercase;
+    margin: 12px 0 6px;
+    padding-left: 8px;
+    border-left: 3px solid var(--gold);
+}
+
+p { margin: 6px 0; text-align: justify; font-size: 10.5px; line-height: 1.5; }
+
+.fill {
+    display: inline-block;
+    border-bottom: 1px solid #555;
+    min-width: 180px;
+    padding: 0 4px;
+    height: 14px;
+    vertical-align: baseline;
+    color: #0C0C0C;
+    font-weight: 500;
+}
+.fill--wide { min-width: 100%; display: block; margin-top: 2px; }
+.fill--short { min-width: 80px; }
+.fill:empty::before { content: '\00a0'; color: transparent; }
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 4px 0;
+}
+.field-row--3 { grid-template-columns: 1fr 1fr 1fr; }
+.field { margin: 4px 0; }
+.field__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 1px;
+    display: block;
+}
+
+.auth-text {
+    margin: 10px 0;
+    padding: 10px 14px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+.auth-text p { margin: 5px 0; }
+
+.highlight-box {
+    background: #fff8e7;
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+ol { padding-left: 18px; margin: 6px 0; font-size: 10.5px; }
+ol li { margin-bottom: 3px; line-height: 1.45; }
+
+.place-date { text-align: right; margin: 14px 0 6px; font-size: 11px; }
+
+.signature { text-align: center; margin-top: 8px; }
+.signature__line { border-top: 1px solid #2a2a2a; margin: 35px auto 4px; width: 80%; }
+.signature__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+}
+
+.footer-doc {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #e8e8e8;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--gray-light);
+    text-transform: uppercase;
+    line-height: 1.5;
+}
+
+@media print {
+    body { background: #fff; padding: 0; }
+    .form-panel { display: none; }
+    .layout { display: block; }
+    .sheet { box-shadow: none; padding: 0; max-width: 100%; border-radius: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- PANEL -->
+    <div class="form-panel">
+        <h2>Preencher Autorização</h2>
+        <div class="form-panel__desc">Preencha os campos e o documento ao lado será atualizado em tempo real. Depois, imprima ou salve como PDF e assine.</div>
+
+        <div class="form-panel__section">Responsável Legal</div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Nome Completo</label>
+            <input type="text" class="form-panel__input" data-bind="resp_nome" placeholder="Nome do responsável">
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Grau de Parentesco</label>
+            <input type="text" class="form-panel__input" data-bind="resp_parentesco" placeholder="Pai, Mãe, Tutor...">
+        </div>
+        <div class="form-row">
+            <div class="form-panel__group">
+                <label class="form-panel__label">RG</label>
+                <input type="text" class="form-panel__input" data-bind="resp_rg">
+            </div>
+            <div class="form-panel__group">
+                <label class="form-panel__label">CPF</label>
+                <input type="text" class="form-panel__input" data-bind="resp_cpf">
+            </div>
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Telefone / WhatsApp</label>
+            <input type="text" class="form-panel__input" data-bind="resp_tel" placeholder="(42) 99999-9999">
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">E-mail</label>
+            <input type="email" class="form-panel__input" data-bind="resp_email">
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Endereço</label>
+            <input type="text" class="form-panel__input" data-bind="resp_end" placeholder="Rua, nº, bairro, cidade">
+        </div>
+
+        <div class="form-panel__section">Menor Participante</div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Nome Completo</label>
+            <input type="text" class="form-panel__input" data-bind="menor_nome">
+        </div>
+        <div class="form-row">
+            <div class="form-panel__group">
+                <label class="form-panel__label">Data de Nascimento</label>
+                <input type="date" class="form-panel__input" data-bind="menor_nasc">
+            </div>
+            <div class="form-panel__group">
+                <label class="form-panel__label">RG ou CPF</label>
+                <input type="text" class="form-panel__input" data-bind="menor_doc">
+            </div>
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Nickname (com #)</label>
+            <input type="text" class="form-panel__input" data-bind="menor_nick" placeholder="Exemplo#1234">
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Modalidade</label>
+            <select class="form-panel__select" data-bind="menor_modalidade">
+                <option value="">— selecione —</option>
+                <option value="CS2">Counter-Strike 2</option>
+                <option value="Valorant">Valorant</option>
+                <option value="Espectador">Espectador</option>
+            </select>
+        </div>
+        <div class="form-panel__group">
+            <label class="form-panel__label">Nome da Equipe</label>
+            <input type="text" class="form-panel__input" data-bind="menor_equipe" placeholder="Se aplicável">
+        </div>
+
+        <div class="form-panel__section">Local e Data</div>
+        <div class="form-row">
+            <div class="form-panel__group">
+                <label class="form-panel__label">Cidade</label>
+                <input type="text" class="form-panel__input" data-bind="cidade" placeholder="Ponta Grossa">
+            </div>
+            <div class="form-panel__group">
+                <label class="form-panel__label">Data</label>
+                <input type="date" class="form-panel__input" data-bind="data">
+            </div>
+        </div>
+
+        <button class="btn btn--primary" onclick="window.print()">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-4h8v4zm3-6c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+            Imprimir / Salvar PDF
+        </button>
+        <a href="inscricao-time.html" class="btn btn--ghost">← Voltar</a>
+    </div>
+
+    <!-- SHEET -->
+    <div class="sheet">
+
+        <div class="header">
+            <div class="header__edition">3ª Edição · InovaWeek 2026 · UTFPR</div>
+            <div class="header__brand">Arena <span>Coliseu</span></div>
+            <div class="header__sub">Campeonato de eSports</div>
+        </div>
+
+        <div class="doc-title">
+            <div class="doc-title__label">Documento Oficial</div>
+            <h1>Termo de Autorização do Responsável Legal</h1>
+        </div>
+
+        <h3>1. Dados do Responsável Legal</h3>
+        <div class="field-row">
+            <div class="field"><span class="field__label">Nome Completo</span><span class="fill fill--wide" data-fill="resp_nome"></span></div>
+            <div class="field"><span class="field__label">Grau de Parentesco</span><span class="fill fill--wide" data-fill="resp_parentesco"></span></div>
+        </div>
+        <div class="field-row field-row--3">
+            <div class="field"><span class="field__label">RG</span><span class="fill fill--wide" data-fill="resp_rg"></span></div>
+            <div class="field"><span class="field__label">CPF</span><span class="fill fill--wide" data-fill="resp_cpf"></span></div>
+            <div class="field"><span class="field__label">Telefone / WhatsApp</span><span class="fill fill--wide" data-fill="resp_tel"></span></div>
+        </div>
+        <div class="field-row">
+            <div class="field"><span class="field__label">E-mail</span><span class="fill fill--wide" data-fill="resp_email"></span></div>
+            <div class="field"><span class="field__label">Endereço</span><span class="fill fill--wide" data-fill="resp_end"></span></div>
+        </div>
+
+        <h3>2. Dados do(a) Menor Participante</h3>
+        <div class="field-row field-row--3">
+            <div class="field"><span class="field__label">Nome Completo</span><span class="fill fill--wide" data-fill="menor_nome"></span></div>
+            <div class="field"><span class="field__label">Data de Nascimento</span><span class="fill fill--wide" data-fill="menor_nasc_fmt"></span></div>
+            <div class="field"><span class="field__label">RG ou CPF</span><span class="fill fill--wide" data-fill="menor_doc"></span></div>
+        </div>
+        <div class="field-row field-row--3">
+            <div class="field"><span class="field__label">Nickname (com #)</span><span class="fill fill--wide" data-fill="menor_nick"></span></div>
+            <div class="field"><span class="field__label">Modalidade</span><span class="fill fill--wide" data-fill="menor_modalidade_fmt"></span></div>
+            <div class="field"><span class="field__label">Nome da Equipe</span><span class="fill fill--wide" data-fill="menor_equipe"></span></div>
+        </div>
+
+        <h3>3. Termo de Autorização</h3>
+        <div class="auth-text">
+            <p>Eu, <strong>responsável legal</strong> acima qualificado, declaro estar ciente e <strong>AUTORIZO EXPRESSAMENTE</strong> a participação do(a) menor acima identificado(a) na <strong>3ª Edição da Arena Coliseu</strong>, campeonato de eSports promovido como parte da <strong>InovaWeek 2026</strong>, na UTFPR Campus Ponta Grossa, com fase online em maio/2026 e <strong>final presencial em 29 de maio de 2026</strong>. Declaro ter lido o <strong>Regulamento Oficial</strong>, estar de acordo com todas as cláusulas e me responsabilizar pela conduta do(a) menor.</p>
+        </div>
+
+        <p style="font-size:10.5px;margin-top:6px;"><strong>Ao assinar este termo, autorizo especificamente que o(a) menor:</strong></p>
+        <ol>
+            <li>Participe das partidas online e da final presencial, incluindo deslocamento e permanência na UTFPR em 29/05/2026;</li>
+            <li>Tenha <strong>imagem, voz e nickname</strong> utilizados em transmissões, fotos e materiais de divulgação da Arena Coliseu, UTFPR e parceiros, sem compensação financeira, por prazo indeterminado;</li>
+            <li>Utilize o servidor de Discord oficial para comunicação e check-in;</li>
+            <li>Tenha seus dados tratados pela organização conforme a LGPD, apenas para fins do evento.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <strong>Ciência:</strong> a organização <strong>não se responsabiliza</strong> por danos, furtos ou extravios de equipamentos pessoais (PC, mouse, teclado, headset) levados pelo(a) menor ao local da final. Anexo cópia de <strong>documento oficial com foto</strong> (RG ou CNH) do responsável legal.
+        </div>
+
+        <div class="place-date">
+            <span class="fill fill--short" data-fill="cidade"></span>,
+            <span class="fill" style="min-width:24px;" data-fill="data_dia"></span> de
+            <span class="fill" style="min-width:100px;" data-fill="data_mes"></span> de
+            <span class="fill" style="min-width:50px;" data-fill="data_ano"></span>.
+        </div>
+
+        <div class="signature">
+            <div class="signature__line"></div>
+            <div class="signature__label">Assinatura do Responsável Legal (conforme documento oficial)</div>
+        </div>
+
+        <div class="footer-doc">
+            Arena Coliseu · 3ª Edição · InovaWeek 2026 · UTFPR Ponta Grossa<br>
+            @arn_coliseu · arncoliseu@gmail.com
+        </div>
+
+    </div>
+</div>
+
+<script>
+var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+function setFill(key, value) {
+    document.querySelectorAll('[data-fill="' + key + '"]').forEach(function(el){
+        el.textContent = value || '';
+    });
+}
+
+function formatDateBR(isoDate) {
+    if (!isoDate) return '';
+    var parts = isoDate.split('-');
+    if (parts.length !== 3) return isoDate;
+    return parts[2] + '/' + parts[1] + '/' + parts[0];
+}
+
+function updateFromBind(key, value) {
+    setFill(key, value);
+    // Campos especiais
+    if (key === 'menor_nasc') setFill('menor_nasc_fmt', formatDateBR(value));
+    if (key === 'menor_modalidade') {
+        var labels = { 'CS2': 'Counter-Strike 2', 'Valorant': 'Valorant', 'Espectador': 'Espectador' };
+        setFill('menor_modalidade_fmt', labels[value] || '');
+    }
+    if (key === 'data' && value) {
+        var p = value.split('-');
+        if (p.length === 3) {
+            setFill('data_dia', p[2]);
+            setFill('data_mes', MESES[parseInt(p[1], 10) - 1] || '');
+            setFill('data_ano', p[0]);
+        } else {
+            setFill('data_dia', '');
+            setFill('data_mes', '');
+            setFill('data_ano', '');
+        }
+    }
+}
+
+document.querySelectorAll('[data-bind]').forEach(function(input) {
+    input.addEventListener('input', function() {
+        updateFromBind(this.dataset.bind, this.value);
+    });
+    input.addEventListener('change', function() {
+        updateFromBind(this.dataset.bind, this.value);
+    });
+});
+
+/* Pré-preenche a cidade e a data do dia */
+(function() {
+    var cityInput = document.querySelector('[data-bind="cidade"]');
+    if (cityInput) { cityInput.value = 'Ponta Grossa'; updateFromBind('cidade', 'Ponta Grossa'); }
+
+    var dateInput = document.querySelector('[data-bind="data"]');
+    if (dateInput) {
+        var t = new Date();
+        var iso = t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+        dateInput.value = iso;
+        updateFromBind('data', iso);
+    }
+})();
+</script>
+
+</body>
+</html>

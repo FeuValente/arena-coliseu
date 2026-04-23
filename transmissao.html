@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transmissão Ao Vivo — Arena Coliseu</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.page-hero { text-align: center; padding-bottom: 20px; }
+
+.live-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px) 80px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .live-layout { grid-template-columns: 1fr; }
+}
+
+/* ---- VIDEO PLAYER ---- */
+.player-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(212,168,67,0.15);
+  box-shadow: 0 0 40px rgba(212,168,67,0.05);
+}
+
+/* Offline state */
+.player-offline {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  background: radial-gradient(ellipse at center, rgba(212,168,67,0.06), transparent 70%), #0a0a0a;
+}
+.player-offline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, transparent 48%, rgba(212,168,67,0.02) 49%, rgba(212,168,67,0.02) 51%, transparent 52%),
+    linear-gradient(135deg, transparent 68%, rgba(212,168,67,0.015) 69%, rgba(212,168,67,0.015) 71%, transparent 72%);
+  pointer-events: none;
+}
+.player-offline__scan {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(212,168,67,0.015) 3px, rgba(212,168,67,0.015) 4px);
+  pointer-events: none;
+}
+.player-offline img {
+  width: clamp(90px, 12vw, 130px);
+  margin-bottom: 20px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 30px rgba(212,168,67,0.25));
+  animation: pulseLogo 3s ease-in-out infinite;
+}
+@keyframes pulseLogo { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: rgba(212,168,67,0.1);
+  border: 1px solid rgba(212,168,67,0.25);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+.live-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #aaa;
+}
+.live-badge--on {
+  background: rgba(233,69,96,0.1);
+  border-color: rgba(233,69,96,0.4);
+  color: #E94560;
+}
+.live-badge--on .live-badge__dot {
+  background: #E94560;
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(233,69,96,0.4); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(233,69,96,0); }
+}
+
+.player-offline h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 52px);
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.player-offline h2 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.player-offline p {
+  font-size: 15px;
+  color: var(--gray-light);
+  max-width: 450px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+.player-offline__info {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.player-offline__info-chip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--gray-light);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+.player-offline__info-chip strong { color: var(--white); }
+
+/* ---- PLATFORM BUTTONS (hidden until channel exists) ---- */
+.platforms {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.platform-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--gray);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: not-allowed;
+  transition: all .3s;
+}
+.platform-btn.enabled {
+  cursor: pointer;
+  color: var(--white);
+  border-color: rgba(212,168,67,0.3);
+}
+.platform-btn.enabled:hover { background: rgba(212,168,67,0.08); border-color: var(--gold); transform: translateY(-2px); }
+.platform-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.platform-btn .disabled-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(212,168,67,0.08);
+  margin-left: 4px;
+}
+
+/* ---- MATCH INFO BELOW PLAYER ---- */
+.match-info {
+  margin-top: 18px;
+  padding: 20px 24px;
+  background: var(--black-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+.match-info__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.match-info__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.match-info__desc {
+  font-size: 14px;
+  color: var(--gray-light);
+  line-height: 1.6;
+}
+
+/* ---- SIDEBAR ---- */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.side-card {
+  background: var(--black-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.side-card__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(90deg, rgba(212,168,67,0.08), transparent);
+}
+.side-card__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+.side-card__body { padding: 16px 20px; }
+
+/* ---- UPCOMING MATCHES ---- */
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.upcoming-item:last-child { border-bottom: none; }
+.upcoming-item__date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  min-width: 58px;
+  text-align: center;
+  line-height: 1.3;
+}
+.upcoming-item__date strong {
+  display: block;
+  font-size: 18px;
+  color: var(--white);
+  font-weight: 700;
+}
+.upcoming-item__divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.08);
+}
+.upcoming-item__info { flex: 1; min-width: 0; }
+.upcoming-item__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.upcoming-item__meta {
+  font-size: 11px;
+  color: var(--gray-light);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* ---- CHAT PLACEHOLDER ---- */
+.chat {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.chat svg { width: 40px; height: 40px; fill: var(--gold-dim); margin-bottom: 12px; opacity: 0.5; }
+
+/* ---- NOTIFY BOX ---- */
+.notify-box {
+  background: linear-gradient(135deg, rgba(212,168,67,0.1), rgba(212,168,67,0.03));
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.notify-box svg { width: 32px; height: 32px; fill: var(--gold); margin-bottom: 10px; }
+.notify-box h4 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.notify-box p {
+  font-size: 13px;
+  color: var(--gray-light);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* ---- HOW TO WATCH ---- */
+.how {
+  padding: 18px 20px;
+}
+.how ol { padding-left: 20px; margin: 0; }
+.how li {
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--gray-muted);
+  line-height: 1.5;
+}
+.how li strong { color: var(--white); }
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <a href="index.html"><img src="assets/img/logo.png" alt="Arena Coliseu" class="header__logo"></a>
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__link" onclick="closeNav()">Home</a>
+    <a href="transmissao.html" class="nav__link active" onclick="closeNav()">Ao Vivo</a>
+    <a href="chaves.html" class="nav__link" onclick="closeNav()">Chaves</a>
+    <a href="programacao.html" class="nav__link" onclick="closeNav()">Programação</a>
+    <a href="index.html#patrocinadores" class="nav__link" onclick="closeNav()">Parceiros</a>
+    <a href="inscricao-time.html" class="nav__cta" onclick="closeNav()">Inscrever Time</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<section class="page-hero">
+  <a href="index.html" class="page-hero__back" style="justify-content:center;">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Voltar para Home
+  </a>
+  <div class="section__label">// Transmissão</div>
+  <h1 class="section__title">Assista Ao Vivo</h1>
+  <p class="section__desc" style="margin:0 auto;">Acompanhe todas as partidas da Arena Coliseu em tempo real. A grande final é presencial e transmitida direto da UTFPR.</p>
+</section>
+
+<div class="live-layout">
+
+  <!-- MAIN: PLAYER + MATCH INFO -->
+  <div>
+    <div class="player-wrap">
+      <!-- When live, replace this div with the iframe embed -->
+      <div class="player-offline">
+        <div class="player-offline__scan"></div>
+        <img src="assets/img/logo.png" alt="Arena Coliseu">
+        <div class="live-badge">
+          <span class="live-badge__dot"></span>
+          Offline
+        </div>
+        <h2>Transmissão<br><span>Em Breve</span></h2>
+        <p>Os canais oficiais para acompanhar a Arena Coliseu ao vivo serão divulgados em maio. Ative as notificações no Instagram para não perder nenhum jogo!</p>
+        <div class="player-offline__info">
+          <span class="player-offline__info-chip">Oitavas · <strong>05 a 11/05</strong></span>
+          <span class="player-offline__info-chip">Quartas · <strong>12 a 18/05</strong></span>
+          <span class="player-offline__info-chip">Semi · <strong>19 a 22/05</strong></span>
+          <span class="player-offline__info-chip" style="border-color:rgba(212,168,67,0.4);color:var(--gold);">Final Presencial · <strong>29/05</strong></span>
+        </div>
+        <div class="platforms">
+          <span class="platform-btn">
+            <svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+            Twitch
+            <span class="disabled-tag">Em Breve</span>
+          </span>
+          <span class="platform-btn">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+            <span class="disabled-tag">Em Breve</span>
+          </span>
+          <a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="platform-btn enabled">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Instagram
+          </a>
+          <a href="https://discord.gg/GpRnUt4UHT" target="_blank" class="platform-btn enabled">
+            <svg viewBox="0 -28.5 256 256"><path d="M216.856 16.597A208.502 208.502 0 00164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 00-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193a161.094 161.094 0 0013.89-22.985 136.166 136.166 0 01-21.846-10.632 108.636 108.636 0 005.356-4.237c42.122 19.702 87.89 19.702 129.51 0 1.751 1.46 3.543 2.88 5.355 4.237a136.07 136.07 0 01-21.886 10.653c4.006 8.02 8.638 15.67 13.862 22.965 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36zM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2 23.236 11.804 23.015 26.2c0 14.375-10.148 26.18-23.015 26.18z"/></svg>
+            Discord
+          </a>
+        </div>
+      </div>
+      <!-- END offline state -->
+
+      <!--
+        Quando o canal estiver ativo, substitua o <div class="player-offline">...</div>
+        pelo embed abaixo (TWITCH):
+
+        <iframe src="https://player.twitch.tv/?channel=SEU_CANAL&parent=arena-coliseu.vercel.app"
+                height="100%" width="100%" frameborder="0" scrolling="no" allowfullscreen="true">
+        </iframe>
+
+        Ou YOUTUBE:
+        <iframe src="https://www.youtube.com/embed/live_stream?channel=SEU_CANAL_ID"
+                width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+      -->
+    </div>
+
+    <!-- CURRENT MATCH -->
+    <div class="match-info">
+      <div class="match-info__label">// Próximo Jogo</div>
+      <div class="match-info__title">Sorteio das Chaves</div>
+      <div class="match-info__desc">04 de maio · Transmitido ao vivo pelo Discord da Arena Coliseu. Acompanhe a definição dos confrontos das oitavas para CS2 e Valorant.</div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="side">
+
+    <!-- Notify -->
+    <div class="notify-box">
+      <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      <h4>Quer ser avisado?</h4>
+      <p>Ative as notificações no nosso Instagram e Discord. Avisamos antes de cada partida!</p>
+      <a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="btn btn--primary btn--small" style="display:inline-flex;width:auto;padding:8px 20px;">Seguir no Instagram</a>
+    </div>
+
+    <!-- Upcoming -->
+    <div class="side-card">
+      <div class="side-card__header">
+        <div class="side-card__title">Próximos Jogos</div>
+      </div>
+      <div class="side-card__body" style="padding-top:4px;padding-bottom:4px;">
+        <div class="upcoming-item">
+          <div class="upcoming-item__date">MAI<strong>04</strong></div>
+          <div class="upcoming-item__divider"></div>
+          <div class="upcoming-item__info">
+            <div class="upcoming-item__title">Sorteio das Chaves</div>
+            <div class="upcoming-item__meta">Ao vivo · Discord</div>
+          </div>
+        </div>
+        <div class="upcoming-item">
+          <div class="upcoming-item__date">MAI<strong>05</strong></div>
+          <div class="upcoming-item__divider"></div>
+          <div class="upcoming-item__info">
+            <div class="upcoming-item__title">Oitavas · Rodada 1</div>
+            <div class="upcoming-item__meta">CS2 + Valorant · Online</div>
+          </div>
+        </div>
+        <div class="upcoming-item">
+          <div class="upcoming-item__date">MAI<strong>12</strong></div>
+          <div class="upcoming-item__divider"></div>
+          <div class="upcoming-item__info">
+            <div class="upcoming-item__title">Quartas de Final</div>
+            <div class="upcoming-item__meta">CS2 + Valorant · Online</div>
+          </div>
+        </div>
+        <div class="upcoming-item">
+          <div class="upcoming-item__date">MAI<strong>19</strong></div>
+          <div class="upcoming-item__divider"></div>
+          <div class="upcoming-item__info">
+            <div class="upcoming-item__title">Semifinais</div>
+            <div class="upcoming-item__meta">CS2 + Valorant · Online</div>
+          </div>
+        </div>
+        <div class="upcoming-item" style="background:rgba(212,168,67,0.04);margin:8px -20px -4px;padding:12px 20px;border-bottom:none;">
+          <div class="upcoming-item__date" style="color:var(--gold-bright);">MAI<strong style="color:var(--gold-bright);">29</strong></div>
+          <div class="upcoming-item__divider" style="background:rgba(212,168,67,0.25);"></div>
+          <div class="upcoming-item__info">
+            <div class="upcoming-item__title" style="color:var(--gold-bright);">GRANDE FINAL</div>
+            <div class="upcoming-item__meta">Presencial · UTFPR PG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to watch -->
+    <div class="side-card">
+      <div class="side-card__header">
+        <div class="side-card__title">Como Assistir</div>
+      </div>
+      <div class="how">
+        <ol>
+          <li><strong>Online</strong> — durante oitavas, quartas e semis, os jogos serão transmitidos pelo nosso canal oficial (a divulgar).</li>
+          <li><strong>Presencial</strong> — a grande final acontece no dia 29 de maio na UTFPR Campus Ponta Grossa. Entrada gratuita, com doação de 1kg de alimento.</li>
+          <li><strong>Interaja</strong> — acompanhe resultados, lances e comentários no nosso servidor do Discord.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Chat placeholder -->
+    <div class="side-card">
+      <div class="side-card__header">
+        <div class="side-card__title">Chat</div>
+      </div>
+      <div class="chat">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+        O chat aparecerá aqui assim que a transmissão começar.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo">
+      <span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR Ponta Grossa</span>
+    </div>
+    <div class="footer__links">
+      <a href="index.html" class="footer__link">Home</a>
+      <a href="chaves.html" class="footer__link">Chaves</a>
+      <a href="inscricao-time.html" class="footer__link">Inscrever Time</a>
+      <a href="https://discord.gg/GpRnUt4UHT" target="_blank" class="footer__link">Discord</a>
+      <a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="footer__link">Instagram</a>
+    </div>
+  </div>
+  <div class="footer__location">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    <span>UTFPR Campus Ponta Grossa — R. Dr. Washington Subtil Chueire, 330 — Jardim Carvalho — CEP 84017-220 — Ponta Grossa, PR</span>
+  </div>
+</footer>
+
+<script>
+const header=document.getElementById('header');window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>50)});
+const hamburger=document.getElementById('hamburger'),nav=document.getElementById('nav');hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';});function closeNav(){hamburger.classList.remove('active');nav.classList.remove('open');document.body.style.overflow='';}
+</script>
+</body>
+</html>

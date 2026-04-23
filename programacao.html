@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programação · 29 de Maio — Arena Coliseu</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.page-hero { text-align: center; padding-bottom: 10px; }
+
+/* Countdown / date banner */
+.date-banner {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  padding: 0 clamp(20px, 5vw, 40px);
+  text-align: center;
+}
+.date-banner__row {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 32px;
+  background: linear-gradient(135deg, rgba(212,168,67,0.08), rgba(212,168,67,0.02));
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 12px;
+}
+.date-banner__num {
+  font-family: var(--font-display);
+  font-size: 52px;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.date-banner__text { text-align: left; }
+.date-banner__text div:first-child {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.date-banner__text div:last-child {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* Timeline layout */
+.schedule {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 40px) 60px;
+  position: relative;
+}
+
+.schedule::before {
+  content: '';
+  position: absolute;
+  left: 132px;
+  top: 20px;
+  bottom: 20px;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    rgba(212,168,67,0.4) 0%,
+    rgba(212,168,67,0.15) 50%,
+    rgba(212,168,67,0.4) 100%);
+}
+@media (max-width: 700px) {
+  .schedule::before { left: 66px; }
+}
+
+/* Each event */
+.evt {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 18px;
+  position: relative;
+}
+@media (max-width: 700px) {
+  .evt { grid-template-columns: 66px 1fr; gap: 14px; }
+}
+
+.evt__time {
+  text-align: right;
+  padding-top: 14px;
+  padding-right: 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  position: relative;
+}
+.evt__time strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+.evt__time-end {
+  color: var(--gray);
+  font-size: 11px;
+  margin-top: 2px;
+}
+@media (max-width: 700px) {
+  .evt__time strong { font-size: 14px; }
+  .evt__time { font-size: 11px; }
+}
+
+/* Dot on timeline */
+.evt__dot {
+  position: absolute;
+  left: -2px;
+  top: 18px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--black), 0 0 12px rgba(212,168,67,0.4);
+  z-index: 2;
+}
+.evt--match .evt__dot { background: var(--gold-bright); box-shadow: 0 0 0 4px var(--black), 0 0 20px rgba(245,197,66,0.6); }
+.evt--final .evt__dot { background: #E94560; box-shadow: 0 0 0 4px var(--black), 0 0 20px rgba(233,69,96,0.5); animation: pulseDot 2s ease-in-out infinite; }
+@keyframes pulseDot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+/* Event card */
+.evt__card {
+  background: var(--black-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 20px 24px;
+  transition: border-color .3s, transform .3s;
+}
+.evt__card:hover { border-color: rgba(212,168,67,0.2); transform: translateX(4px); }
+
+.evt__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.evt__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+.evt__chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(212,168,67,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,67,0.2);
+}
+.evt__chip--cs { background: rgba(232,160,37,0.12); color: #F5C542; border-color: rgba(245,197,66,0.3); }
+.evt__chip--val { background: rgba(253,69,86,0.1); color: #FD4556; border-color: rgba(253,69,86,0.3); }
+.evt__chip--break { background: rgba(125,206,160,0.1); color: #7dcea0; border-color: rgba(125,206,160,0.25); }
+.evt__chip--award { background: linear-gradient(135deg, rgba(245,197,66,0.2), rgba(212,168,67,0.1)); color: var(--gold-bright); border-color: rgba(245,197,66,0.4); }
+
+.evt__desc {
+  font-size: 14px;
+  color: var(--gray-light);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* Match row inside card */
+.match-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.match-row__game {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.match-row__game img { height: 20px; }
+.match-row__format {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+.match-row__vs {
+  flex: 1;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gray-light);
+  letter-spacing: 0.05em;
+}
+
+/* Special cards */
+.evt--break .evt__card {
+  background: linear-gradient(135deg, rgba(125,206,160,0.05), rgba(125,206,160,0.01));
+  border-color: rgba(125,206,160,0.15);
+}
+.evt--award .evt__card {
+  background: linear-gradient(135deg, rgba(212,168,67,0.08), rgba(212,168,67,0.02));
+  border: 2px solid rgba(212,168,67,0.25);
+  position: relative;
+  overflow: hidden;
+}
+.evt--award .evt__card::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 200%;
+  top: -50%;
+  left: -40px;
+  background: linear-gradient(90deg, transparent, rgba(245,197,66,0.12), transparent);
+  animation: sweep 5s ease-in-out infinite;
+  transform: skewX(-20deg);
+}
+@keyframes sweep {
+  0% { left: -40px; }
+  50% { left: calc(100% + 40px); }
+  100% { left: -40px; }
+}
+
+.evt--final .evt__card {
+  background: linear-gradient(135deg, rgba(233,69,96,0.06), rgba(212,168,67,0.04));
+  border: 2px solid rgba(212,168,67,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Session divider (Morning / Afternoon) */
+.session-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 36px 0 20px;
+}
+.session-divider__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent);
+}
+.session-divider__label {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.session-divider__label svg { width: 18px; height: 18px; fill: var(--gold); }
+
+/* Summary cards */
+.summary {
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  padding: 0 clamp(20px, 5vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 700px) {
+  .summary { grid-template-columns: repeat(2, 1fr); }
+}
+.summary__card {
+  background: var(--black-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.summary__card svg { width: 24px; height: 24px; fill: var(--gold); margin-bottom: 8px; }
+.summary__num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--white);
+  line-height: 1;
+}
+.summary__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--gray-light);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Location box */
+.location-box {
+  max-width: 1000px;
+  margin: 20px auto 60px;
+  padding: 24px 32px;
+  background: var(--black-card);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.location-box svg { width: 36px; height: 36px; fill: var(--gold); flex-shrink: 0; }
+.location-box h4 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.location-box p { font-size: 13px; color: var(--gray-light); line-height: 1.5; }
+@media (max-width: 600px) { .location-box { flex-direction: column; text-align: center; } }
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <a href="index.html"><img src="assets/img/logo.png" alt="Arena Coliseu" class="header__logo"></a>
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__link" onclick="closeNav()">Home</a>
+    <a href="transmissao.html" class="nav__link" onclick="closeNav()">Ao Vivo</a>
+    <a href="chaves.html" class="nav__link" onclick="closeNav()">Chaves</a>
+    <a href="programacao.html" class="nav__link active" onclick="closeNav()">Programação</a>
+    <a href="index.html#patrocinadores" class="nav__link" onclick="closeNav()">Parceiros</a>
+    <a href="inscricao-time.html" class="nav__cta" onclick="closeNav()">Inscrever Time</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<section class="page-hero">
+  <a href="index.html" class="page-hero__back" style="justify-content:center;">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Voltar para Home
+  </a>
+  <div class="section__label">// Grande Final Presencial</div>
+  <h1 class="section__title">Programação do Evento</h1>
+  <p class="section__desc" style="margin:0 auto;">Cronograma completo do dia da grande final. Duas finais MD3, coffee break e premiação. Tudo em um só dia na UTFPR.</p>
+</section>
+
+<!-- Date banner -->
+<div class="date-banner">
+  <div class="date-banner__row">
+    <div class="date-banner__num">29</div>
+    <div class="date-banner__text">
+      <div>Sexta-feira</div>
+      <div>Maio de 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary__card">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/></svg>
+    <div class="summary__num">~10h</div>
+    <div class="summary__label">Duração</div>
+  </div>
+  <div class="summary__card">
+    <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2z"/></svg>
+    <div class="summary__num">2</div>
+    <div class="summary__label">Finais MD3</div>
+  </div>
+  <div class="summary__card">
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <div class="summary__num">2</div>
+    <div class="summary__label">Campeões</div>
+  </div>
+  <div class="summary__card">
+    <svg viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+    <div class="summary__num">Free</div>
+    <div class="summary__label">Entrada Gratuita</div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="schedule">
+
+  <!-- MORNING -->
+  <div class="session-divider">
+    <div class="session-divider__line"></div>
+    <div class="session-divider__label">
+      <svg viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg>
+      Manhã
+    </div>
+    <div class="session-divider__line"></div>
+  </div>
+
+  <!-- Arrival -->
+  <div class="evt">
+    <div class="evt__time">
+      <strong>08:00</strong>
+      08:00 — 09:00
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Check-in e Abertura</div>
+        <span class="evt__chip">Credenciamento</span>
+      </div>
+      <div class="evt__desc">Chegada dos finalistas, equipe e público. Montagem dos setups, check-in dos times, validação de documentos e entrega dos 1kg de alimento.</div>
+    </div>
+  </div>
+
+  <!-- Opening -->
+  <div class="evt">
+    <div class="evt__time">
+      <strong>09:00</strong>
+      09:00 — 09:30
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Cerimônia de Abertura</div>
+        <span class="evt__chip">Oficial</span>
+      </div>
+      <div class="evt__desc">Boas-vindas, apresentação dos times finalistas, das organizadoras e dos patrocinadores. Retrospectiva da 3ª edição.</div>
+    </div>
+  </div>
+
+  <!-- Final CS2 -->
+  <div class="evt evt--match">
+    <div class="evt__time">
+      <strong>09:30</strong>
+      09:30 — 12:00
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Final CS2</div>
+        <span class="evt__chip evt__chip--cs">MD3</span>
+        <span class="evt__chip">Manhã</span>
+      </div>
+      <div class="evt__desc">Grande final de Counter-Strike 2. Dois times finalistas disputam o título em melhor de 3 mapas, com transmissão ao vivo e casting oficial.</div>
+      <div class="match-row">
+        <div class="match-row__game">
+          <img src="assets/img/logo-counter-strike-2.png" alt="CS2">
+        </div>
+        <span class="match-row__format">5v5 · Melhor de 3 mapas</span>
+        <span class="match-row__vs">Finalista A <strong style="color:var(--gold);">VS</strong> Finalista B</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coffee break -->
+  <div class="evt evt--break">
+    <div class="evt__time">
+      <strong>12:00</strong>
+      12:00 — 14:00
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Coffee Break e Almoço</div>
+        <span class="evt__chip evt__chip--break">Intervalo</span>
+      </div>
+      <div class="evt__desc">Pausa para alimentação e descanso. Coffee break liberado para times, staff e público credenciado. Área livre para networking.</div>
+    </div>
+  </div>
+
+  <!-- AFTERNOON -->
+  <div class="session-divider">
+    <div class="session-divider__line"></div>
+    <div class="session-divider__label">
+      <svg viewBox="0 0 24 24"><path d="M12 9c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3zm0-2c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13l2 .01V11H2zm18 0l2 .01V11h-2zm-9-9h2V2h-2zm0 18h2v-2h-2zM5.99 4.58l-1.41 1.41 1.79 1.79 1.41-1.41zm12.37 12.37l-1.41 1.41 1.79 1.79 1.41-1.41zm1.79-10.96l-1.41-1.41-1.79 1.79 1.41 1.41zM7.76 17.36l-1.41-1.41-1.79 1.8 1.41 1.41z"/></svg>
+      Tarde
+    </div>
+    <div class="session-divider__line"></div>
+  </div>
+
+  <!-- Presentation -->
+  <div class="evt">
+    <div class="evt__time">
+      <strong>14:00</strong>
+      14:00 — 14:15
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Apresentação Final Valorant</div>
+        <span class="evt__chip">Warm-up</span>
+      </div>
+      <div class="evt__desc">Retomada das atividades, apresentação dos times finalistas de Valorant e preparação para a segunda final.</div>
+    </div>
+  </div>
+
+  <!-- Final Valorant -->
+  <div class="evt evt--match">
+    <div class="evt__time">
+      <strong>14:15</strong>
+      14:15 — 17:00
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Final Valorant</div>
+        <span class="evt__chip evt__chip--val">MD3</span>
+        <span class="evt__chip">Tarde</span>
+      </div>
+      <div class="evt__desc">Grande final de Valorant. Dois times finalistas disputam o título em melhor de 3 mapas, com transmissão ao vivo.</div>
+      <div class="match-row">
+        <div class="match-row__game">
+          <img src="assets/img/logo-valorant.png" alt="Valorant">
+        </div>
+        <span class="match-row__format">5v5 · Melhor de 3 mapas</span>
+        <span class="match-row__vs">Finalista A <strong style="color:#FD4556;">VS</strong> Finalista B</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coffee after -->
+  <div class="evt evt--break">
+    <div class="evt__time">
+      <strong>17:00</strong>
+      17:00 — 17:30
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Coffee Break Final</div>
+        <span class="evt__chip evt__chip--break">Intervalo</span>
+      </div>
+      <div class="evt__desc">Pausa antes da cerimônia de premiação. Momento para descompressão, foto com os times e últimos ajustes do palco.</div>
+    </div>
+  </div>
+
+  <!-- Awards -->
+  <div class="evt evt--award">
+    <div class="evt__time">
+      <strong>17:30</strong>
+      17:30 — 18:30
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Cerimônia de Premiação</div>
+        <span class="evt__chip evt__chip--award">Finale</span>
+      </div>
+      <div class="evt__desc">Entrega dos troféus aos campeões de CS2 e Valorant, reconhecimento dos times, MVP da edição, agradecimentos aos patrocinadores e encerramento oficial da 3ª edição da Arena Coliseu.</div>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="evt evt--final">
+    <div class="evt__time">
+      <strong>18:30</strong>
+      Encerramento
+    </div>
+    <div class="evt__dot"></div>
+    <div class="evt__card">
+      <div class="evt__header">
+        <div class="evt__title">Fim de Linha · Até 2027</div>
+        <span class="evt__chip evt__chip--award">Encerramento</span>
+      </div>
+      <div class="evt__desc">Desmontagem dos setups, despedida dos times e primeiros anúncios sobre a <strong style="color:var(--gold);">4ª edição</strong>. Fica o convite para o próximo ano!</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Location -->
+<div class="location-box">
+  <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+  <div>
+    <h4>Onde acontece</h4>
+    <p><strong style="color:var(--white);">UTFPR Campus Ponta Grossa</strong> — R. Dr. Washington Subtil Chueire, 330 · Jardim Carvalho · CEP 84017-220 · Ponta Grossa, PR. Entrada gratuita mediante doação de 1kg de alimento não perecível.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <img src="assets/img/logo.png" alt="Arena Coliseu" class="footer__logo">
+      <span class="footer__copy">&copy; 2026 Arena Coliseu — UTFPR Ponta Grossa</span>
+    </div>
+    <div class="footer__links">
+      <a href="index.html" class="footer__link">Home</a>
+      <a href="transmissao.html" class="footer__link">Ao Vivo</a>
+      <a href="chaves.html" class="footer__link">Chaves</a>
+      <a href="programacao.html" class="footer__link">Programação</a>
+      <a href="https://discord.gg/GpRnUt4UHT" target="_blank" class="footer__link">Discord</a>
+      <a href="https://www.instagram.com/arn_coliseu/" target="_blank" class="footer__link">Instagram</a>
+    </div>
+  </div>
+  <div class="footer__location">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    <span>UTFPR Campus Ponta Grossa — R. Dr. Washington Subtil Chueire, 330 — Jardim Carvalho — CEP 84017-220 — Ponta Grossa, PR</span>
+  </div>
+</footer>
+
+<script>
+const header=document.getElementById('header');window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>50)});
+const hamburger=document.getElementById('hamburger'),nav=document.getElementById('nav');hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';});function closeNav(){hamburger.classList.remove('active');nav.classList.remove('open');document.body.style.overflow='';}
+</script>
+</body>
+</html>

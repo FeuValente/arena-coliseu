@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulamento Oficial — Arena Coliseu 3ª Edição</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --gold: #D4A843;
+    --gold-bright: #F5C542;
+    --gold-deep: #C8962E;
+    --gold-dim: #8B6914;
+    --black: #0C0C0C;
+    --black-light: #111111;
+    --black-card: #161616;
+    --black-elevated: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --gray: #555;
+    --gray-light: #888;
+    --gray-muted: #aaa;
+    --white: #F0ECE3;
+    --white-pure: #fff;
+    --red: #E74C3C;
+    --green: #2ECC71;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+@page {
+    size: A4;
+    margin: 1.6cm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+html, body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 48px;
+    position: relative;
+}
+
+/* Grain overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+}
+
+/* ---- HERO ---- */
+.hero {
+    text-align: center;
+    padding: 50px 20px 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(212,168,67,0.15);
+    position: relative;
+    background: radial-gradient(ellipse at center top, rgba(212,168,67,0.08) 0%, transparent 70%);
+}
+.hero__edition {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(212,168,67,0.1);
+    border: 1px solid rgba(212,168,67,0.25);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+}
+.hero__title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    color: var(--white-pure);
+    margin-bottom: 8px;
+}
+.hero__title span {
+    display: block;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.hero__subtitle {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+.hero__meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gray-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 18px;
+}
+
+/* ---- SECTION / CAPÍTULO ---- */
+.capitulo {
+    margin-top: 48px;
+}
+.capitulo__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+.capitulo__title {
+    font-family: var(--font-display);
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: var(--white-pure);
+    text-transform: uppercase;
+}
+.capitulo__line {
+    width: 70px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 14px 0 22px;
+}
+
+h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 26px 0 12px;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold);
+}
+
+.artigo {
+    margin: 12px 0;
+    color: var(--gray-muted);
+}
+.artigo strong:first-child {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+}
+.artigo strong { color: var(--white); font-weight: 600; }
+
+ol, ul { padding-left: 22px; margin: 8px 0; }
+ol li, ul li { margin-bottom: 6px; color: var(--gray-muted); }
+ol li::marker, ul li::marker { color: var(--gold); }
+
+/* ---- CARDS / BOXES ---- */
+.info-box {
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin: 18px 0;
+    font-size: 13px;
+    border: 1px solid;
+    background: var(--black-card);
+}
+.info-box strong { color: var(--white); }
+.info-box--gold {
+    background: rgba(212,168,67,0.06);
+    border-color: rgba(212,168,67,0.25);
+    color: var(--gold);
+}
+.info-box--warn {
+    background: rgba(231,76,60,0.06);
+    border-color: rgba(231,76,60,0.25);
+    color: #f08878;
+}
+.info-box--food {
+    background: rgba(46,204,113,0.06);
+    border-color: rgba(46,204,113,0.25);
+    color: #7dcea0;
+}
+
+/* ---- SUMÁRIO ---- */
+.sumario {
+    background: var(--black-card);
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 30px 0;
+}
+.sumario__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.sumario ol {
+    columns: 2;
+    column-gap: 30px;
+    padding-left: 20px;
+}
+.sumario li {
+    font-size: 12.5px;
+    margin-bottom: 6px;
+    color: var(--gray-muted);
+    break-inside: avoid;
+}
+
+/* ---- TABELAS ---- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    font-size: 12.5px;
+    background: var(--black-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+th {
+    background: linear-gradient(135deg, rgba(212,168,67,0.15), rgba(212,168,67,0.05));
+    color: var(--gold);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(212,168,67,0.2);
+}
+td {
+    padding: 11px 14px;
+    color: var(--gray-muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
+td strong { color: var(--white); }
+
+/* ---- PREMIAÇÃO ---- */
+.premiacao {
+    background: linear-gradient(135deg, rgba(212,168,67,0.1), rgba(212,168,67,0.02));
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    position: relative;
+}
+.premiacao::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-bright), var(--gold), var(--gold-deep));
+    border-radius: 14px 14px 0 0;
+}
+.premiacao h4 {
+    border-left: none;
+    padding-left: 0;
+    margin-top: 0;
+    font-size: 24px;
+    color: var(--gold-bright);
+}
+.premiacao ul { list-style: none; padding-left: 0; }
+.premiacao ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(212,168,67,0.08);
+    color: var(--white);
+    font-size: 14px;
+}
+.premiacao ul li:last-child { border-bottom: none; }
+.premiacao ul li strong { color: var(--gold); }
+
+/* ---- MODALIDADE ---- */
+.mod-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0 16px;
+    padding: 14px 18px;
+    background: var(--black-card);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+}
+.mod-header__tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--gold);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.mod-header__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+}
+
+/* ---- FOOTER ---- */
+.footer-signature {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(212,168,67,0.15);
+    text-align: center;
+}
+.footer-signature__line {
+    width: 280px;
+    height: 1px;
+    background: var(--gold);
+    margin: 50px auto 10px;
+    opacity: 0.4;
+}
+.footer-signature__org {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.footer-signature__local {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-light);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+.footer-brand {
+    margin-top: 40px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.page-break { page-break-before: always; }
+.avoid-break { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero__edition">3ª Edição · InovaWeek 2026 · UTFPR</div>
+    <h1 class="hero__title">
+        Arena
+        <span>Coliseu</span>
+    </h1>
+    <div class="hero__subtitle">Regulamento Oficial</div>
+    <div class="hero__meta">CS2 &nbsp;·&nbsp; Valorant &nbsp;·&nbsp; Maio de 2026 &nbsp;·&nbsp; Ponta Grossa</div>
+</section>
+
+<!-- SUMÁRIO -->
+<div class="sumario">
+    <div class="sumario__title">Sumário</div>
+    <ol>
+        <li>Disposições Gerais</li>
+        <li>Participação e Elegibilidade</li>
+        <li>Inscrições e Taxa Solidária</li>
+        <li>Documentos Obrigatórios</li>
+        <li>Formato da Competição</li>
+        <li>Cronograma Oficial</li>
+        <li>Check-in, Pontualidade e W.O.</li>
+        <li>Regras Específicas — CS2</li>
+        <li>Regras Específicas — Valorant</li>
+        <li>Conduta, Anti-Trapaça e Penalidades</li>
+        <li>Substituição de Jogadores</li>
+        <li>Final Presencial e Equipamentos</li>
+        <li>Direito de Imagem e Transmissão</li>
+        <li>Premiação</li>
+        <li>Comunicação Oficial</li>
+        <li>Disposições Finais</li>
+    </ol>
+</div>
+
+<!-- ================= CAPÍTULO I ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo I</div>
+    <h2 class="capitulo__title">Disposições Gerais</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 1º</strong> — O presente regulamento rege os jogos e normas da <strong>Arena Coliseu — 3ª Edição</strong>, campeonato de eSports promovido pela organização do evento na Universidade Tecnológica Federal do Paraná (UTFPR), Campus Ponta Grossa, como parte das atividades da <strong>InovaWeek 2026</strong>.
+    </div>
+    <div class="artigo">
+        <strong>Art. 2º</strong> — A Arena Coliseu tem a finalidade de desenvolver a integração e o intercâmbio sócio-cultural do meio universitário, promovendo a prática dos eSports de forma saudável, competitiva e inclusiva.
+    </div>
+    <div class="artigo">
+        <strong>Art. 3º</strong> — O campeonato será disputado em duas modalidades:
+        <ol type="a">
+            <li><strong>Counter-Strike 2 (CS2)</strong> — equipes de 5 jogadores;</li>
+            <li><strong>Valorant</strong> — equipes de 5 jogadores.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 4º</strong> — Cada modalidade contará com até <strong>16 (dezesseis) equipes</strong>, cada uma com sua chave independente.
+    </div>
+    <div class="artigo">
+        <strong>Art. 5º</strong> — É de competência da <strong>Comissão Organizadora (C.O.)</strong> interpretar este regulamento, zelar por sua execução e decidir sobre casos omissos.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO II ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo II</div>
+    <h2 class="capitulo__title">Participação e Elegibilidade</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 6º</strong> — Podem participar estudantes regularmente matriculados em qualquer universidade ou instituição de ensino, além de jogadores independentes, respeitados os demais requisitos deste regulamento.
+    </div>
+    <div class="artigo">
+        <strong>Art. 7º</strong> — <strong>Idade mínima:</strong> 14 (quatorze) anos completos na data da inscrição.
+    </div>
+    <div class="info-box info-box--warn">
+        <strong>MENORES DE 18 ANOS:</strong> Jogadores com menos de 18 anos deverão, obrigatoriamente, apresentar <strong>Termo de Autorização assinado pelo responsável legal</strong>, conforme modelo disponibilizado pela organização, sem o qual a inscrição não será validada.
+    </div>
+    <div class="artigo">
+        <strong>Art. 8º</strong> — Cada jogador poderá se inscrever em <strong>apenas uma modalidade</strong> (CS2 OU Valorant). Não é permitida a participação simultânea nas duas modalidades, mesmo em equipes diferentes.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO III ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo III</div>
+    <h2 class="capitulo__title">Inscrições e Taxa Solidária</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 9º</strong> — As inscrições estarão abertas no período de <strong>01 a 30 de abril de 2026</strong>, exclusivamente através do link oficial a ser divulgado no Instagram <strong>@arn_coliseu</strong> e no servidor Discord do evento.
+    </div>
+    <div class="artigo">
+        <strong>Art. 10</strong> — A inscrição deverá ser realizada pelo <strong>capitão da equipe</strong>, que será o representante oficial do time perante a organização.
+    </div>
+    <div class="artigo">
+        <strong>Art. 11</strong> — No formulário de inscrição deverão constar os seguintes dados da <strong>equipe</strong>:
+        <ol type="a">
+            <li>Nome da equipe (sem palavras ofensivas, vulgares ou discriminatórias);</li>
+            <li>Modalidade escolhida (CS2 ou Valorant);</li>
+            <li><strong>Logo/brasão da equipe</strong> — imagem em formato PNG, resolução mínima 500×500 px (<strong>obrigatório</strong>);</li>
+            <li>Indicação do capitão.</li>
+        </ol>
+    </div>
+
+    <div class="info-box info-box--warn">
+        <strong>REGRAS DO BRASÃO / LOGO DA EQUIPE:</strong> O brasão deve ser <strong>original e autoral</strong>. Será <strong>RECUSADO</strong> qualquer logo que:
+        <ol type="a" style="margin-top:8px;">
+            <li>Utilize logos, marcas ou ícones oficiais de terceiros (ex.: <strong>Nike, Adidas, Puma, Under Armour, Jordan</strong>, clubes de futebol, times profissionais de eSports etc.);</li>
+            <li>Contenha símbolos, personagens ou artes protegidas por direitos autorais (<em>anime</em>, jogos, filmes, HQs) sem autorização;</li>
+            <li>Reutilize ícones, emojis ou imagens já existentes na internet sem modificação significativa;</li>
+            <li>Contenha elementos ofensivos, discriminatórios, de cunho sexual ou que violem a legislação brasileira.</li>
+        </ol>
+        Equipes com brasão recusado serão notificadas e terão <strong>48 horas</strong> para enviar uma nova arte; caso contrário, a inscrição não será validada.
+    </div>
+    <div class="artigo">
+        <strong>Art. 12</strong> — Para <strong>cada um dos 5 (cinco) jogadores</strong>, a inscrição deverá informar:
+        <ol type="a">
+            <li>Nome completo;</li>
+            <li>Número de RG ou CPF;</li>
+            <li>E-mail de contato;</li>
+            <li>Telefone / WhatsApp;</li>
+            <li>Nickname no jogo, incluindo a hashtag identificadora (ex.: <em>Player#1234</em>);</li>
+            <li>Data de nascimento (para verificação de idade);</li>
+            <li>Termo de autorização do responsável legal anexado, quando menor de 18 anos.</li>
+        </ol>
+    </div>
+
+    <h4>Seção I — Taxa de Participação</h4>
+
+    <div class="artigo">
+        <strong>Art. 13</strong> — A taxa de inscrição será simbólica e de caráter solidário: <strong>1 (um) quilograma de alimento não perecível por jogador</strong>, totalizando 5 kg por equipe.
+    </div>
+    <div class="artigo">
+        <strong>Art. 14</strong> — Os alimentos deverão ser entregues em ponto de coleta divulgado pela organização, <strong>até 1 (uma) semana antes do início dos jogos online</strong>, ou seja, impreterivelmente até <strong>27 de abril de 2026</strong>.
+    </div>
+    <div class="artigo">
+        <strong>Art. 15</strong> — Equipes que não realizarem a entrega dos alimentos dentro do prazo <strong>não terão a inscrição validada</strong> e perderão a vaga, que poderá ser oferecida a uma equipe suplente.
+    </div>
+    <div class="info-box info-box--food">
+        <strong>Destinação dos alimentos:</strong> Todos os alimentos arrecadados serão doados integralmente a instituições beneficentes da região de Ponta Grossa, com comprovação publicada no Instagram da Arena Coliseu.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO IV ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo IV</div>
+    <h2 class="capitulo__title">Documentos Obrigatórios</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 16</strong> — Antes de cada partida, cada jogador deverá apresentar, via videochamada à organização, um <strong>documento oficial com foto</strong> (RG, CNH, Passaporte ou Certificado de Reservista).
+    </div>
+    <div class="artigo">
+        <strong>Art. 17</strong> — A conferência dos documentos será realizada pela C.O. antes do início da partida. Jogadores que não apresentarem documento válido não poderão disputar.
+    </div>
+    <div class="artigo">
+        <strong>Art. 18</strong> — Informações falsas, documentos inválidos ou uso indevido de conta de terceiros (<em>smurf/boost</em>) resultarão em <strong>desclassificação imediata</strong> da equipe.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO V ================= -->
+<section class="capitulo page-break">
+    <div class="capitulo__label">Capítulo V</div>
+    <h2 class="capitulo__title">Formato da Competição</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 19</strong> — O torneio será disputado em duas etapas principais, por modalidade:
+        <ol type="a">
+            <li><strong>Fase de Grupos</strong> — com times distribuídos por <strong>sorteio público</strong>;</li>
+            <li><strong>Fase Eliminatória</strong> — em sistema de chave única (<em>single elimination</em>), culminando em final presencial.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 20</strong> — O <strong>sorteio dos grupos</strong> será realizado ao vivo em <strong>04 de maio de 2026</strong>, transmitido pelo Discord e/ou Instagram oficial da Arena Coliseu.
+    </div>
+    <div class="artigo">
+        <strong>Art. 21</strong> — Formato detalhado das fases:
+    </div>
+    <table>
+        <thead>
+            <tr><th>Fase</th><th>Formato</th><th>Modalidade</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Fase de Grupos</td><td>Grupos definidos por sorteio. Todos contra todos dentro do grupo, MD1.</td><td>Online</td></tr>
+            <tr><td>Oitavas / Quartas</td><td>MD1 (Melhor de 1) — eliminação simples</td><td>Online</td></tr>
+            <tr><td>Semifinal</td><td>MD1 (Melhor de 1) — eliminação simples</td><td>Online</td></tr>
+            <tr><td><strong>Grande Final</strong></td><td><strong>MD3 (Melhor de 3)</strong></td><td><strong>Presencial</strong></td></tr>
+        </tbody>
+    </table>
+    <div class="artigo">
+        <strong>Art. 22</strong> — Os confrontos eliminatórios serão definidos pela campanha na fase de grupos (1º do grupo A × 2º do grupo B, e assim sucessivamente).
+    </div>
+    <div class="artigo">
+        <strong>Art. 23</strong> — Caso o número de equipes inscritas seja inferior ou superior a 16, a organização poderá ajustar o formato das chaves de acordo com o número de participantes, mantendo o espírito competitivo do evento.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO VI ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo VI</div>
+    <h2 class="capitulo__title">Cronograma Oficial</h2>
+    <div class="capitulo__line"></div>
+
+    <table>
+        <thead>
+            <tr><th>Data</th><th>Evento</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>01/04/2026</td><td>Abertura das inscrições</td></tr>
+            <tr><td>30/04/2026</td><td>Encerramento das inscrições</td></tr>
+            <tr><td>Até 27/04/2026</td><td>Entrega obrigatória dos alimentos (taxa solidária)</td></tr>
+            <tr><td>04/05/2026</td><td>Sorteio público dos grupos</td></tr>
+            <tr><td>05 a 15/05/2026</td><td>Fase de Grupos (online)</td></tr>
+            <tr><td>16 a 22/05/2026</td><td>Fase Eliminatória online (oitavas, quartas, semifinal)</td></tr>
+            <tr><td><strong>29/05/2026</strong></td><td><strong>Grande Final Presencial — UTFPR Ponta Grossa</strong><br>Manhã: CS2 | Tarde: Valorant</td></tr>
+        </tbody>
+    </table>
+
+    <div class="info-box info-box--gold">
+        Datas e horários específicos de cada partida serão comunicados aos capitães com antecedência mínima de <strong>48 horas</strong>, via Discord.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO VII ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo VII</div>
+    <h2 class="capitulo__title">Check-in, Pontualidade e W.O.</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 24</strong> — O <strong>check-in é obrigatório</strong> e deverá ser feito com <strong>15 (quinze) minutos de antecedência</strong> do horário marcado para a partida, no canal de voz designado do Discord.
+    </div>
+    <div class="artigo">
+        <strong>Art. 25</strong> — Durante o check-in, a equipe deverá estar com os 5 jogadores presentes, documentos em mão e prontos para a videochamada de verificação.
+    </div>
+    <div class="artigo">
+        <strong>Art. 26</strong> — Será tolerado atraso máximo de <strong>10 (dez) minutos</strong> em relação ao horário marcado de cada jogo. Após este prazo, a equipe ausente será declarada perdedora por <strong>W.O. (Walkover)</strong>.
+    </div>
+    <div class="artigo">
+        <strong>Art. 27</strong> — Em caso de problemas técnicos comprovados (queda de internet, falha de servidor oficial do jogo), a organização poderá conceder prazo adicional a seu critério exclusivo.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO VIII ================= -->
+<section class="capitulo page-break">
+    <div class="capitulo__label">Capítulo VIII</div>
+    <h2 class="capitulo__title">Regras Específicas — CS2</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="mod-header">
+        <span class="mod-header__tag">FPS</span>
+        <span class="mod-header__name">Counter-Strike 2</span>
+    </div>
+
+    <div class="artigo">
+        <strong>Art. 28</strong> — <strong>Formato de Jogo:</strong> as partidas serão disputadas em <strong>Melhor de 24 rounds (MR12)</strong>.
+    </div>
+    <div class="artigo">
+        <strong>Art. 29</strong> — <strong>Condição de Vitória:</strong> vence a equipe que chegar primeiro a <strong>13 rounds</strong>.
+    </div>
+    <div class="artigo">
+        <strong>Art. 30</strong> — <strong>Prorrogação (Overtime):</strong> em caso de empate em 12×12, será jogado sistema de <strong>Melhor de 6 rounds (MR3)</strong> com <strong>$10.000</strong> de dinheiro inicial, repetindo-se até haver vencedor.
+    </div>
+    <div class="artigo">
+        <strong>Art. 31</strong> — <strong>Configurações Técnicas:</strong>
+        <ul>
+            <li>Round Time: <strong>1min 55s</strong>;</li>
+            <li>Bomb Timer: <strong>40s</strong>;</li>
+            <li>Freeze Time: <strong>20s</strong>;</li>
+            <li>Servidor: oficial competitivo, fornecido pela organização.</li>
+        </ul>
+    </div>
+    <div class="artigo">
+        <strong>Art. 32</strong> — <strong>Map Pool:</strong> Inferno, Nuke, Mirage, Dust2, Train, Anubis e Ancient.
+    </div>
+    <div class="artigo">
+        <strong>Art. 33</strong> — <strong>Pausas:</strong> cada equipe tem direito a <strong>3 (três) pausas táticas</strong> de 30 segundos por mapa.
+    </div>
+    <div class="artigo">
+        <strong>Art. 34</strong> — <strong>Seleção de mapas:</strong>
+        <ol type="a">
+            <li>Fases online (MD1): sorteio simples entre as equipes no momento da partida, supervisionado pelo administrador;</li>
+            <li>Final (MD3): processo de veto/pick padrão competitivo, alternando entre as equipes.</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO IX ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo IX</div>
+    <h2 class="capitulo__title">Regras Específicas — Valorant</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="mod-header">
+        <span class="mod-header__tag">FPS Tático</span>
+        <span class="mod-header__name">Valorant</span>
+    </div>
+
+    <div class="artigo">
+        <strong>Art. 35</strong> — <strong>Configurações da sala:</strong>
+        <ul>
+            <li>Modo Torneio: <strong>ligado</strong>;</li>
+            <li>"Vença por dois": <strong>ligado</strong>;</li>
+            <li>Cheats: <strong>desligados</strong>;</li>
+            <li>Servidor: mais próximo dos participantes, definido pela organização.</li>
+        </ul>
+    </div>
+    <div class="artigo">
+        <strong>Art. 36</strong> — <strong>Seleção de Agentes:</strong> as equipes terão <strong>85 segundos</strong> para escolher seus agentes. Trocas não serão permitidas após a seleção, salvo em caso de erro técnico comprovado e autorizado pelo administrador.
+    </div>
+    <div class="artigo">
+        <strong>Art. 37</strong> — <strong>Agentes e Mapas Novos:</strong>
+        <ul>
+            <li>Novos agentes: disponíveis para uso apenas após <strong>2 (duas) semanas</strong> de seu lançamento oficial;</li>
+            <li>Novos mapas: disponíveis para uso apenas após <strong>4 (quatro) semanas</strong> de lançamento.</li>
+        </ul>
+    </div>
+    <div class="artigo">
+        <strong>Art. 38</strong> — <strong>Pausas:</strong> cada equipe terá direito a <strong>1 (uma) pausa tática de 1 minuto por lado</strong> (uma no Ataque e uma na Defesa).
+    </div>
+    <div class="artigo">
+        <strong>Art. 39</strong> — <strong>Comunicação:</strong> é proibido o uso de programas de terceiros (Skype, TeamSpeak etc.) para chat de voz durante as partidas. Deverá ser utilizado o sistema oficial da organização (Discord).
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO X ================= -->
+<section class="capitulo page-break">
+    <div class="capitulo__label">Capítulo X</div>
+    <h2 class="capitulo__title">Conduta, Anti-Trapaça e Penalidades</h2>
+    <div class="capitulo__line"></div>
+
+    <h4>Seção I — Integridade Competitiva</h4>
+
+    <div class="artigo">
+        <strong>Art. 40</strong> — É <strong>estritamente proibido</strong> o uso de <em>softwares</em> ilegais, <em>scripts</em>, <em>cheats</em> ou qualquer ferramenta que proporcione vantagem injusta, incluindo (mas não limitado a):
+        <ol type="a">
+            <li><em>Aimbot</em>, <em>triggerbot</em>, <em>rage hacks</em>;</li>
+            <li><em>Wallhack</em>, <em>ESP</em> e visualização através de paredes;</li>
+            <li><em>Speedhack</em>, <em>no-recoil</em>, macros;</li>
+            <li>Qualquer software que altere o funcionamento normal do jogo.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 41</strong> — O uso <strong>intencional de bugs</strong> para obtenção de vantagem competitiva (ex.: <em>pixel bugs</em>, <em>exploits</em> de mapa) acarretará as penalidades previstas neste regulamento.
+    </div>
+    <div class="artigo">
+        <strong>Art. 42</strong> — A organização designará <strong>administradores</strong> para supervisionar as partidas. A decisão do administrador sobre questões de integridade competitiva é <strong>final e irrecorrível</strong>.
+    </div>
+
+    <h4>Seção II — Conduta dos Participantes</h4>
+
+    <div class="artigo">
+        <strong>Art. 43</strong> — São consideradas infrações disciplinares:
+        <ol type="a">
+            <li><strong>Rage / comportamento tóxico:</strong> gritos, ofensas ou destrate contra adversários, companheiros ou organização;</li>
+            <li>Insultos ou discriminação de qualquer natureza (racial, de gênero, religiosa, orientação sexual etc.);</li>
+            <li>Sabotagem intencional de partidas;</li>
+            <li>Assédio ou intimidação;</li>
+            <li>Exploração intencional de <em>bugs</em>;</li>
+            <li>Desrespeito às decisões da organização ou dos administradores;</li>
+            <li>Divulgação de informações falsas sobre o campeonato.</li>
+        </ol>
+    </div>
+
+    <h4>Seção III — Escala de Penalidades</h4>
+
+    <table>
+        <thead>
+            <tr><th>Gravidade</th><th>Penalidade</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Leve (1ª ocorrência)</td><td>Advertência verbal</td></tr>
+            <tr><td>Moderada / Reincidência</td><td>Advertência formal + <strong>perda de rodada</strong></td></tr>
+            <tr><td>Grave</td><td><strong>Perda do mapa</strong> em disputa</td></tr>
+            <tr><td>Gravíssima</td><td><strong>Desclassificação</strong> da equipe</td></tr>
+            <tr><td>Trapaça comprovada / conduta criminosa</td><td>Desclassificação + <strong>banimento permanente</strong> de futuras edições da Arena Coliseu</td></tr>
+        </tbody>
+    </table>
+
+    <div class="artigo">
+        <strong>Art. 44</strong> — A equipe é <strong>solidariamente responsável</strong> pela conduta de todos os seus membros. A infração de um jogador pode resultar em penalidade para toda a equipe.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XI ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo XI</div>
+    <h2 class="capitulo__title">Substituição de Jogadores</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 45</strong> — Caso uma equipe precise substituir um jogador após a inscrição, deverá comunicar a organização com antecedência mínima de <strong>24 horas</strong> antes da próxima partida.
+    </div>
+    <div class="artigo">
+        <strong>Art. 46</strong> — O jogador substituto:
+        <ol type="a">
+            <li><strong>Não poderá</strong> ser membro de outra equipe já inscrita no campeonato (em qualquer modalidade);</li>
+            <li>Deverá atender a todos os requisitos de inscrição (idade, documentos, autorização se menor);</li>
+            <li>Deverá ter seus dados enviados à organização <strong>antes</strong> de entrar em partida.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 47</strong> — Cada equipe poderá realizar no máximo <strong>1 (uma) substituição</strong> durante todo o campeonato.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XII ================= -->
+<section class="capitulo page-break">
+    <div class="capitulo__label">Capítulo XII</div>
+    <h2 class="capitulo__title">Final Presencial e Equipamentos</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 48</strong> — A Grande Final será realizada <strong>presencialmente</strong> em <strong>29 de maio de 2026</strong>, nas dependências da UTFPR Campus Ponta Grossa, com programação:
+        <ul>
+            <li><strong>Manhã:</strong> Final de Counter-Strike 2 (MD3);</li>
+            <li><strong>Tarde:</strong> Final de Valorant (MD3).</li>
+        </ul>
+    </div>
+    <div class="artigo">
+        <strong>Art. 49</strong> — Os jogadores finalistas deverão comparecer pessoalmente. A ausência de jogador sem justificativa e sem substituto habilitado resultará em W.O.
+    </div>
+    <div class="artigo">
+        <strong>Art. 50</strong> — <strong>Equipamentos:</strong>
+        <ol type="a">
+            <li>A organização <strong>buscará providenciar</strong> computadores para a final. Caso não seja possível, os jogadores serão notificados previamente e deverão <strong>trazer suas próprias máquinas</strong>;</li>
+            <li>Monitor: <strong>opcional</strong> para o jogador; a organização fornecerá monitores quando possível;</li>
+            <li>Periféricos de uso pessoal (<strong>mouse, teclado, mousepad e headset</strong>): de responsabilidade do próprio jogador, recomendado que traga o seu para garantir conforto;</li>
+            <li>A organização <strong>não se responsabiliza</strong> por danos, furtos ou extravios de computadores, periféricos ou quaisquer equipamentos trazidos pelos participantes;</li>
+            <li>A organização fornecerá infraestrutura de rede (internet) e energia elétrica.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 51</strong> — O processo de veto/pick de mapas na final seguirá padrão competitivo; a equipe com melhor campanha terá vantagem na escolha de lado no primeiro mapa. Vence a equipe que conquistar 2 mapas primeiro.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XIII ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo XIII</div>
+    <h2 class="capitulo__title">Direito de Imagem e Transmissão</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 52</strong> — Ao realizar a inscrição, o jogador <strong>autoriza expressamente</strong>, sem compensação financeira adicional:
+        <ol type="a">
+            <li>O uso de sua <strong>imagem e voz</strong> em materiais de divulgação do evento;</li>
+            <li>A <strong>transmissão ao vivo (streaming)</strong> das partidas em plataformas como Twitch, YouTube e Instagram;</li>
+            <li>A divulgação de fotos, vídeos, entrevistas e destaques em redes sociais oficiais da Arena Coliseu, UTFPR e parceiros/patrocinadores;</li>
+            <li>O uso do nome da equipe, logo e <em>nicknames</em> em peças de comunicação do evento.</li>
+        </ol>
+    </div>
+    <div class="artigo">
+        <strong>Art. 53</strong> — A autorização é concedida por prazo indeterminado, para fins institucionais, educacionais e promocionais, respeitados os direitos de personalidade do jogador.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XIV ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo XIV</div>
+    <h2 class="capitulo__title">Premiação</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="premiacao avoid-break">
+        <h4>Troféus Arena Coliseu · 3ª Edição</h4>
+        <ul>
+            <li><strong>5 troféus</strong> para a equipe campeã de <strong>Counter-Strike 2</strong> (um por jogador)</li>
+            <li><strong>5 troféus</strong> para a equipe campeã de <strong>Valorant</strong> (um por jogador)</li>
+            <li><strong>1 troféu MVP</strong> — Melhor Jogador da modalidade <strong>Counter-Strike 2</strong></li>
+            <li><strong>1 troféu MVP</strong> — Melhor Jogador da modalidade <strong>Valorant</strong></li>
+            <li><strong>Total geral: 12 troféus</strong></li>
+        </ul>
+    </div>
+
+    <div class="artigo">
+        <strong>Art. 54</strong> — Premiações adicionais (brindes, produtos de patrocinadores, prêmios em dinheiro) poderão ser incluídas conforme patrocínios firmados, e serão divulgadas oficialmente no Instagram <strong>@arn_coliseu</strong> antes do início do torneio.
+    </div>
+    <div class="artigo">
+        <strong>Art. 55</strong> — A escolha do MVP de cada modalidade será feita por colegiado composto por membros da organização, administradores e convidados técnicos.
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XV ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo XV</div>
+    <h2 class="capitulo__title">Comunicação Oficial</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 56</strong> — Canais oficiais de comunicação:
+        <ul>
+            <li><strong>Discord:</strong> Servidor Arena Coliseu (principal)</li>
+            <li><strong>Instagram:</strong> @arn_coliseu</li>
+            <li><strong>E-mail:</strong> arncoliseu@gmail.com</li>
+        </ul>
+    </div>
+    <div class="artigo">
+        <strong>Art. 57</strong> — Todos os jogadores inscritos deverão:
+        <ol type="a">
+            <li>Ingressar no Discord da Arena Coliseu em até 48 horas após a confirmação da inscrição;</li>
+            <li>Manter-se ativos e verificar comunicados regularmente;</li>
+            <li>Estar presentes no Discord durante os horários de suas partidas.</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ================= CAPÍTULO XVI ================= -->
+<section class="capitulo">
+    <div class="capitulo__label">Capítulo XVI</div>
+    <h2 class="capitulo__title">Disposições Finais</h2>
+    <div class="capitulo__line"></div>
+
+    <div class="artigo">
+        <strong>Art. 58</strong> — A inscrição implica a <strong>aceitação total e irrestrita</strong> deste regulamento por parte da equipe e de cada um de seus jogadores.
+    </div>
+    <div class="artigo">
+        <strong>Art. 59</strong> — A organização se reserva o direito de <strong>alterar datas, formatos e regras</strong> deste edital, desde que comunicado aos participantes com antecedência mínima de 48 horas via canais oficiais.
+    </div>
+    <div class="artigo">
+        <strong>Art. 60</strong> — <strong>Casos omissos</strong> ou situações não previstas neste regulamento serão decididos pela organização da Arena Coliseu, cuja decisão será soberana e irrecorrível.
+    </div>
+    <div class="artigo">
+        <strong>Art. 61</strong> — Este regulamento entra em vigor na data de sua publicação e revoga disposições em contrário de editais anteriores desta edição.
+    </div>
+
+    <div class="info-box info-box--gold">
+        <strong>Contato da Organização</strong><br>
+        Discord: Servidor Arena Coliseu &nbsp;·&nbsp; Instagram: @arn_coliseu<br>
+        E-mail: arncoliseu@gmail.com &nbsp;·&nbsp; Local da Final: UTFPR — Campus Ponta Grossa
+    </div>
+</section>
+
+<div class="footer-signature">
+    <div class="footer-signature__line"></div>
+    <div class="footer-signature__org">Organização Arena Coliseu</div>
+    <div class="footer-signature__local">UTFPR · Ponta Grossa · Abril de 2026</div>
+</div>
+
+<div class="footer-brand">
+    Arena Coliseu · 3ª Edição · InovaWeek 2026
+</div>
+
+</body>
+</html>

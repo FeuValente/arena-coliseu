@@ -5,14 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inscrição Espectador — Arena Coliseu</title>
 <link rel="stylesheet" href="styles.css">
-<style>.spec__container { max-width: 500px; margin: 0 auto; }</style>
+<style>
+.spec__container { max-width: 500px; margin: 0 auto; }
+.minor-checkbox { display:flex; align-items:flex-start; gap:10px; padding:14px 16px; background:var(--black-card); border:1px solid rgba(212,168,67,0.15); border-radius:10px; cursor:pointer; font-size:13px; color:var(--gray-muted); transition:border-color .2s, background .2s; margin-top:6px; }
+.minor-checkbox:hover { border-color: rgba(212,168,67,0.35); }
+.minor-checkbox input[type="checkbox"] { width:20px; height:20px; margin-top:1px; flex-shrink:0; accent-color:var(--gold); cursor:pointer; }
+.minor-checkbox.checked { background: rgba(212,168,67,0.06); border-color: rgba(212,168,67,0.45); color:var(--white); }
+.auth-upload-wrapper { display:none; margin-top:14px; }
+.auth-upload-wrapper.show { display:block; animation: authFadeIn .3s ease-out; }
+@keyframes authFadeIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+</style>
 </head>
 <body>
 <header class="header" id="header">
   <a href="index.html"><img src="assets/img/logo.png" alt="Arena Coliseu" class="header__logo"></a>
   <nav class="nav" id="nav">
     <a href="index.html" class="nav__link" onclick="closeNav()">Home</a>
+    <a href="transmissao.html" class="nav__link" onclick="closeNav()">Ao Vivo</a>
     <a href="chaves.html" class="nav__link" onclick="closeNav()">Chaves</a>
+    <a href="programacao.html" class="nav__link" onclick="closeNav()">Programação</a>
     <a href="index.html#patrocinadores" class="nav__link" onclick="closeNav()">Parceiros</a>
     <a href="inscricao-time.html" class="nav__cta" onclick="closeNav()">Inscrever Time</a>
   </nav>
@@ -40,6 +51,26 @@
       <div class="form__group"><label class="form__label form__label--required">Seu Nome Completo</label><input type="text" class="form__input" name="spec_name" placeholder="Nome completo" required></div>
       <div class="form__group"><label class="form__label form__label--required">E-mail</label><input type="email" class="form__input" name="spec_email" placeholder="email@exemplo.com" required></div>
       <div class="form__group"><label class="form__label form__label--required">Telefone / WhatsApp</label><input type="tel" class="form__input" name="spec_phone" placeholder="(00) 00000-0000" required></div>
+
+      <div class="form__group">
+        <label class="minor-checkbox" id="specMinorLabel">
+          <input type="checkbox" name="spec_is_minor" value="sim" id="specMinorCheck">
+          <span><strong style="color:var(--gold);">Sou menor de 18 anos</strong> — é obrigatório anexar autorização assinada pelo responsável legal para entrar no evento.</span>
+        </label>
+        <div class="auth-upload-wrapper" id="specAuthWrapper">
+          <a href="autorizacao-responsavel.html" target="_blank" class="btn btn--outline btn--small" style="display:inline-flex;margin-top:14px;gap:8px;">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            Baixar Modelo de Autorização
+          </a>
+          <label class="form__label form__label--required" style="margin-top:14px;">Autorização do Responsável (PDF, JPG ou PNG)</label>
+          <label class="form__file-upload" id="specAuthUpload">
+            <input type="file" name="spec_auth_file" accept=".pdf,.jpg,.jpeg,.png" id="specAuthInput">
+            <svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:var(--gold-dim);margin-bottom:6px;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg>
+            <div class="form__file-upload__text" id="specAuthText"><strong>Clique para enviar</strong> a autorização<br><small style="color:var(--gray);">PDF, JPG ou PNG — até 5 MB</small></div>
+          </label>
+        </div>
+      </div>
+
       <input type="text" name="website_url" style="position:absolute;left:-9999px;opacity:0;height:0;" tabindex="-1" autocomplete="off">
       <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;margin-top:8px;">Confirmar Presença</button>
     </form>
@@ -68,6 +99,34 @@ const header=document.getElementById('header');window.addEventListener('scroll',
 const hamburger=document.getElementById('hamburger'),nav=document.getElementById('nav');hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';});function closeNav(){hamburger.classList.remove('active');nav.classList.remove('open');document.body.style.overflow='';}
 const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){setTimeout(()=>x.target.classList.add('revealed'),+(x.target.dataset.delay||0));ro.unobserve(x.target);}});},{threshold:.15,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('[data-reveal]').forEach(el=>ro.observe(el));
 document.addEventListener('input',e=>{if(e.target.type==='tel'){let v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;else if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;else if(v.length>0)v=`(${v}`;e.target.value=v;}});
+
+/* Minor-age toggle */
+document.getElementById('specMinorCheck').addEventListener('change', function(){
+  var w = document.getElementById('specAuthWrapper');
+  var l = document.getElementById('specMinorLabel');
+  if(this.checked){ w.classList.add('show'); l.classList.add('checked'); }
+  else { w.classList.remove('show'); l.classList.remove('checked');
+    document.getElementById('specAuthInput').value='';
+    document.getElementById('specAuthText').innerHTML='<strong>Clique para enviar</strong> a autorização<br><small style="color:var(--gray);">PDF, JPG ou PNG — até 5 MB</small>';
+    document.getElementById('specAuthUpload').classList.remove('has-file');
+  }
+});
+document.getElementById('specAuthInput').addEventListener('change', function(){
+  var f = this.files[0]; if(!f) return;
+  if(f.size > 5*1024*1024){ alert('Arquivo muito grande. Máximo 5 MB.'); this.value=''; return; }
+  document.getElementById('specAuthText').innerHTML = '<strong style="color:var(--green-ok);">'+f.name+'</strong>';
+  document.getElementById('specAuthUpload').classList.add('has-file');
+});
+/* Block submit if minor-age checked without file */
+document.getElementById('spectatorForm').addEventListener('submit', function(e){
+  var chk = document.getElementById('specMinorCheck');
+  var file = document.getElementById('specAuthInput');
+  if(chk.checked && (!file.files || file.files.length===0)){
+    e.preventDefault(); e.stopImmediatePropagation();
+    alert('Menor de idade: anexe a autorização do responsável antes de confirmar.');
+    return false;
+  }
+}, true);
 </script>
 <script src="script-formularios.js"></script>
 </body>

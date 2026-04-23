@@ -225,8 +225,28 @@ body::before {
 .sponsors-track { display: flex; gap: 50px; align-items: center; animation: scrollCarousel 25s linear infinite; width: max-content; }
 .sponsors-track:hover { animation-play-state: paused; }
 @keyframes scrollCarousel { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-.sponsor-logo-img { height: 60px; opacity: 0.55; filter: grayscale(0.3) brightness(1.5); transition: opacity 0.3s, filter 0.3s, transform 0.3s; flex-shrink: 0; }
+.sponsor-logo-img { width: 170px; height: 90px; object-fit: contain; opacity: 0.55; filter: grayscale(0.3) brightness(1.5); transition: opacity 0.3s, filter 0.3s, transform 0.3s; flex-shrink: 0; }
 .sponsor-logo-img:hover { opacity: 1; filter: grayscale(0) brightness(1); transform: scale(1.08); }
+.sponsor-logo-img[src*="hotel-pax"],
+.sponsor-logo-img[src*="logo-goblin"],
+.sponsor-logo-img[src*="logo-leadzy"],
+.sponsor-logo-img[src*="logo-proem"],
+.sponsor-logo-img[src*="logo-publiflow"],
+.sponsor-logo-img[src*="logo-inovaweek"] { transform: scale(1.35); }
+.sponsor-logo-img[src*="hotel-pax"]:hover,
+.sponsor-logo-img[src*="logo-goblin"]:hover,
+.sponsor-logo-img[src*="logo-leadzy"]:hover,
+.sponsor-logo-img[src*="logo-proem"]:hover,
+.sponsor-logo-img[src*="logo-publiflow"]:hover,
+.sponsor-logo-img[src*="logo-inovaweek"]:hover { transform: scale(1.45); }
+.sponsor-logo-img[src*="unimed"],
+.sponsor-logo-img[src*="Sicredi"],
+.sponsor-logo-img[src*="pg.png"],
+.sponsor-logo-img[src*="comtur"] { transform: scale(0.85); }
+.sponsor-logo-img[src*="unimed"]:hover,
+.sponsor-logo-img[src*="Sicredi"]:hover,
+.sponsor-logo-img[src*="pg.png"]:hover,
+.sponsor-logo-img[src*="comtur"]:hover { transform: scale(0.95); }
 
 /* ---- FOOTER ---- */
 .footer {
