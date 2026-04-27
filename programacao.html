@@ -51,84 +51,99 @@
 
 /* Timeline layout */
 .schedule {
+  --time-col: 130px;
+  --col-gap: 28px;
+  --side-pad: clamp(20px, 5vw, 40px);
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 40px) 60px;
+  padding: 0 var(--side-pad) 60px;
   position: relative;
 }
 
 .schedule::before {
   content: '';
   position: absolute;
-  left: 132px;
-  top: 20px;
-  bottom: 20px;
+  left: calc(var(--side-pad) + var(--time-col) + var(--col-gap) / 2 - 1px);
+  top: 30px;
+  bottom: 30px;
   width: 2px;
   background: linear-gradient(to bottom,
-    rgba(212,168,67,0.4) 0%,
-    rgba(212,168,67,0.15) 50%,
-    rgba(212,168,67,0.4) 100%);
+    rgba(212,168,67,0) 0%,
+    rgba(212,168,67,0.45) 6%,
+    rgba(212,168,67,0.18) 50%,
+    rgba(212,168,67,0.45) 94%,
+    rgba(212,168,67,0) 100%);
+  z-index: 0;
 }
+
 @media (max-width: 700px) {
-  .schedule::before { left: 66px; }
+  .schedule { --time-col: 72px; --col-gap: 18px; }
 }
 
 /* Each event */
 .evt {
   display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 24px;
+  grid-template-columns: var(--time-col) 1fr;
+  gap: var(--col-gap);
   align-items: start;
   margin-bottom: 18px;
   position: relative;
-}
-@media (max-width: 700px) {
-  .evt { grid-template-columns: 66px 1fr; gap: 14px; }
 }
 
 .evt__time {
   text-align: right;
   padding-top: 14px;
-  padding-right: 8px;
+  padding-right: 14px;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--gold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   position: relative;
+  white-space: nowrap;
 }
 .evt__time strong {
   display: block;
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 22px;
   color: var(--white);
   letter-spacing: 0.03em;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  line-height: 1;
 }
 .evt__time-end {
+  display: block;
   color: var(--gray);
   font-size: 11px;
-  margin-top: 2px;
+  letter-spacing: 0.08em;
+  margin-top: 3px;
 }
 @media (max-width: 700px) {
-  .evt__time strong { font-size: 14px; }
-  .evt__time { font-size: 11px; }
+  .evt__time { font-size: 11px; padding-right: 8px; }
+  .evt__time strong { font-size: 15px; }
+  .evt__time-end { font-size: 10px; letter-spacing: 0.04em; }
 }
 
 /* Dot on timeline */
 .evt__dot {
   position: absolute;
-  left: -2px;
-  top: 18px;
+  left: calc(var(--time-col) + var(--col-gap) / 2);
+  top: 24px;
+  margin-left: -7px;
   width: 14px;
   height: 14px;
   border-radius: 50%;
   background: var(--gold);
-  box-shadow: 0 0 0 4px var(--black), 0 0 12px rgba(212,168,67,0.4);
+  box-shadow: 0 0 0 4px var(--black), 0 0 12px rgba(212,168,67,0.45);
   z-index: 2;
 }
 .evt--match .evt__dot { background: var(--gold-bright); box-shadow: 0 0 0 4px var(--black), 0 0 20px rgba(245,197,66,0.6); }
-.evt--final .evt__dot { background: #E94560; box-shadow: 0 0 0 4px var(--black), 0 0 20px rgba(233,69,96,0.5); animation: pulseDot 2s ease-in-out infinite; }
-@keyframes pulseDot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+.evt--break .evt__dot { background: #7dcea0; box-shadow: 0 0 0 4px var(--black), 0 0 14px rgba(125,206,160,0.5); }
+.evt--award .evt__dot { background: var(--gold-bright); box-shadow: 0 0 0 4px var(--black), 0 0 22px rgba(245,197,66,0.7); }
+.evt--final .evt__dot { background: #E94560; animation: pulseDot 2.4s ease-in-out infinite; }
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 4px var(--black), 0 0 14px rgba(233,69,96,0.5), 0 0 0 0 rgba(233,69,96,0); }
+  50% { box-shadow: 0 0 0 4px var(--black), 0 0 22px rgba(233,69,96,0.9), 0 0 0 10px rgba(233,69,96,0); }
+}
 
 /* Event card */
 .evt__card {
@@ -406,7 +421,7 @@
   <div class="evt">
     <div class="evt__time">
       <strong>08:00</strong>
-      08:00 — 09:00
+      <span class="evt__time-end">até 09:00</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -422,7 +437,7 @@
   <div class="evt">
     <div class="evt__time">
       <strong>09:00</strong>
-      09:00 — 09:30
+      <span class="evt__time-end">até 09:30</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -438,7 +453,7 @@
   <div class="evt evt--match">
     <div class="evt__time">
       <strong>09:30</strong>
-      09:30 — 12:00
+      <span class="evt__time-end">até 12:00</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -462,7 +477,7 @@
   <div class="evt evt--break">
     <div class="evt__time">
       <strong>12:00</strong>
-      12:00 — 14:00
+      <span class="evt__time-end">até 14:00</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -488,7 +503,7 @@
   <div class="evt">
     <div class="evt__time">
       <strong>14:00</strong>
-      14:00 — 14:15
+      <span class="evt__time-end">até 14:15</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -504,7 +519,7 @@
   <div class="evt evt--match">
     <div class="evt__time">
       <strong>14:15</strong>
-      14:15 — 17:00
+      <span class="evt__time-end">até 17:00</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -528,7 +543,7 @@
   <div class="evt evt--break">
     <div class="evt__time">
       <strong>17:00</strong>
-      17:00 — 17:30
+      <span class="evt__time-end">até 17:30</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -544,7 +559,7 @@
   <div class="evt evt--award">
     <div class="evt__time">
       <strong>17:30</strong>
-      17:30 — 18:30
+      <span class="evt__time-end">até 18:30</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
@@ -560,7 +575,7 @@
   <div class="evt evt--final">
     <div class="evt__time">
       <strong>18:30</strong>
-      Encerramento
+      <span class="evt__time-end">Fim</span>
     </div>
     <div class="evt__dot"></div>
     <div class="evt__card">
